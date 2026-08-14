@@ -1,11 +1,4 @@
-// Injecte le contenu de data-tag dans l'étiquette mono de chaque projet
-document.querySelectorAll(".project").forEach((project) => {
-  const tag = project.dataset.tag;
-  const tagEl = project.querySelector(".project__tag");
-  if (tag && tagEl) tagEl.textContent = tag;
-});
-
-// Reveal au scroll
+// Reveal au scroll pour les sections projet détaillées
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -30,7 +23,6 @@ if (navToggle && navLinks) {
     navToggle.setAttribute("aria-expanded", String(isOpen));
   });
 
-  // Ferme le menu après un clic sur un lien (mobile)
   navLinks.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
       navLinks.classList.remove("nav__links--open");

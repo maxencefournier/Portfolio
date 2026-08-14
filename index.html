@@ -7,7 +7,7 @@
 <meta name="description" content="Portfolio de Xite, direction artistique et world-building — VR, cinéma IA, création de mondes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Sora:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -41,83 +41,96 @@
   </div>
 </section>
 
-<!-- PROJETS -->
-<main id="projets">
+<!-- MOSAÏQUE -->
+<section class="mosaic" id="projets">
+  <div class="mosaic__grid">
+    <a href="#p-mondes-disparus" class="mosaic__tile" style="grid-column: span 8;">
+      <img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus">
+      <span class="mosaic__label">Mondes disparus</span>
+    </a>
+    <a href="#p-harmony" class="mosaic__tile" style="grid-column: span 4;">
+      <img src="Asset/Image/Harmony cover.png" alt="Harmony">
+      <span class="mosaic__label">Harmony</span>
+    </a>
+    <a href="#p-eternelle-notre-dame" class="mosaic__tile" style="grid-column: span 4;">
+      <img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame">
+      <span class="mosaic__label">Éternelle Notre-Dame</span>
+    </a>
+    <a href="#p-louis-vuitton" class="mosaic__tile" style="grid-column: span 8;">
+      <img src="Asset/Image/Louis Vuitton cover.png" alt="Louis Vuitton">
+      <span class="mosaic__label">Louis Vuitton</span>
+    </a>
+    <a href="#p-somehow" class="mosaic__tile" style="grid-column: span 12;">
+      <img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there">
+      <span class="mosaic__label">Somehow you'll get there</span>
+    </a>
+  </div>
+</section>
 
-  <article class="project" data-tag="PROJET 01 — MONDES DISPARUS — DIRECTION ARTISTIQUE — VR / 2025">
+<!-- DÉTAILS PROJETS -->
+<main class="details">
+
+  <article class="project" id="p-mondes-disparus">
     <div class="project__media">
       <img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus — expérience VR">
     </div>
     <div class="project__info">
-      <span class="project__tag"></span>
+      <span class="project__eyebrow">Direction artistique — VR</span>
       <h2 class="project__title">Mondes disparus</h2>
       <p class="project__desc">Expérience VR de 45 minutes retraçant 1,5 milliard d'années d'évolution du vivant, en collaboration avec le Muséum d'Histoire Naturelle. Direction artistique, design de personnages et d'architectures.</p>
-      <a href="#" class="project__link">Voir le projet →</a>
     </div>
   </article>
 
-  <article class="project project--reverse" data-tag="PROJET 02 — LOUIS VUITTON — DIRECTION ARTISTIQUE — VR / 2 OPUS">
+  <article class="project project--reverse" id="p-harmony">
     <div class="project__media">
-      <img src="Asset/Image/Louis Vuitton cover.png" alt="Louis Vuitton — expérience VR">
+      <img src="Asset/Image/Harmony cover.png" alt="Harmony — moyen métrage de science-fiction">
     </div>
     <div class="project__info">
-      <span class="project__tag"></span>
-      <h2 class="project__title">Louis Vuitton</h2>
-      <p class="project__desc">Projet VR en deux opus incarnant les valeurs de la maison en présentant la richesse de ses métiers d'artisanat. Scénario construit via storyboards, mise en scène des savoir-faire sous forme de tableaux surréalistes — un paysage fait d'émail, un canyon de métal gravé.</p>
-      <a href="#" class="project__link">Voir le projet →</a>
-    </div>
-  </article>
-
-  <article class="project" data-tag="PROJET 03 — HARMONY — STORYBOARD / CONCEPT ART — MOYEN MÉTRAGE">
-    <div class="project__media">
-      <img src="Asset/Image/Harmony cover.png" alt="Harmony — film de science-fiction">
-    </div>
-    <div class="project__info">
-      <span class="project__tag"></span>
+      <span class="project__eyebrow">Storyboard — Concept art — Moyen métrage</span>
       <h2 class="project__title">Harmony</h2>
       <p class="project__desc">Moyen métrage de science-fiction où un personnage tombe amoureux d'une sex doll dans une campagne reculée de France. Storyboard aux côtés des scénaristes et du réalisateur pour construire un script solide, et concept art du personnage robot.</p>
-      <a href="#" class="project__link">Voir le projet →</a>
     </div>
   </article>
 
-  <article class="project project--reverse" data-tag="PROJET 04 — ÉTERNELLE NOTRE-DAME — DIRECTION ARTISTIQUE — VR">
+  <article class="project" id="p-eternelle-notre-dame">
     <div class="project__media">
       <img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame — expérience VR">
     </div>
     <div class="project__info">
-      <span class="project__tag"></span>
+      <span class="project__eyebrow">VR</span>
       <h2 class="project__title">Éternelle Notre-Dame</h2>
-      <p class="project__desc">Expérience VR retraçant l'histoire de la cathédrale et permettant de visiter des lieux inaccessibles de son architecture.</p>
-      <a href="#" class="project__link">Voir le projet →</a>
+      <p class="project__desc">Expérience VR retraçant l'histoire de la cathédrale et donnant accès à des lieux inaccessibles de son architecture.</p>
     </div>
   </article>
 
-  <article class="project" data-tag="PROJET 05 — SOMEHOW YOU'LL GET THERE — ILLUSTRATION — PROJET PERSONNEL">
+  <article class="project project--reverse" id="p-louis-vuitton">
+    <div class="project__media">
+      <img src="Asset/Image/Louis Vuitton cover.png" alt="Projet VR Louis Vuitton">
+    </div>
+    <div class="project__info">
+      <span class="project__eyebrow">Direction artistique — VR — 2 opus</span>
+      <h2 class="project__title">Louis Vuitton</h2>
+      <p class="project__desc">Projet VR en deux opus incarnant les valeurs de la maison en donnant à voir la richesse de ses métiers d'artisanat. Scénario construit via storyboard, scènes conçues comme des tableaux surréalistes mettant en scène les savoir-faire de façon poétique — un paysage d'émail, un canyon de métal gravé.</p>
+    </div>
+  </article>
+
+  <article class="project" id="p-somehow">
     <div class="project__media">
       <img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there — série d'illustrations">
     </div>
     <div class="project__info">
-      <span class="project__tag"></span>
+      <span class="project__eyebrow">Illustration — Projet personnel</span>
       <h2 class="project__title">Somehow you'll get there</h2>
-      <p class="project__desc">Série d'illustrations dessinées à la main, mettant en scène des personnages perdus dans d'immenses déserts, chacun tentant de trouver son chemin avec des technologies ultra poussées — sans jamais se croiser. La vérité : il n'y a pas vraiment de chemin, et chacun est condamné à errer seul.</p>
-      <a href="#" class="project__link">Voir le projet →</a>
+      <p class="project__desc">Série d'illustrations dessinées à la main, mettant en scène des personnages perdus dans d'immenses déserts sans jamais se croiser. Chacun tente, avec des technologies ultra poussées, de trouver son chemin — mais la vérité, c'est qu'il n'y en a pas vraiment, et chacun est condamné à errer seul.</p>
     </div>
   </article>
-
-  <!--
-    Pour ajouter un projet : duplique un bloc <article class="project">.
-    Alterne "project" et "project project--reverse" pour l'effet zig-zag.
-    Le contenu de data-tag est injecté automatiquement dans .project__tag par script.js
-  -->
 
 </main>
 
 <!-- ABOUT -->
 <section class="about" id="about">
-  <div class="about__inner">
-    <p class="about__label">À propos</p>
-    <p class="about__text">Directeur artistique spécialisé dans la construction de mondes narratifs — de l'expérience immersive au cinéma généré par IA. Je cherche à rejoindre des équipes qui racontent des histoires à travers des univers visuels forts : jeu vidéo, animation, film, publicité.</p>
-  </div>
+  <p class="about__label">À propos</p>
+  <p class="about__text">Directeur artistique spécialisé dans la construction de mondes narratifs — de l'expérience immersive au cinéma généré par IA. Je cherche à rejoindre des équipes qui racontent des histoires à travers des univers visuels forts : jeu vidéo, animation, film, publicité.</p>
 </section>
 
 <!-- CONTACT -->
