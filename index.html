@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xite — Direction artistique &amp; world-building</title>
+<meta name="description" content="Portfolio de Xite, direction artistique et world-building — VR, cinéma IA, création de mondes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<header class="nav" id="nav">
+  <a href="#top" class="nav__logo">XITE</a>
+  <nav class="nav__links">
+    <a href="#projets">Projets</a>
+    <a href="#about">À propos</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button class="nav__toggle" id="navToggle" aria-label="Ouvrir le menu">
+    <span></span><span></span>
+  </button>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <video class="hero__video" autoplay muted loop playsinline poster="assets/images/hero-poster.jpg">
+    <!-- Remplace ce fichier par ta propre vidéo showreel -->
+    <source src="assets/video/showreel.mp4" type="video/mp4">
+  </video>
+  <div class="hero__overlay"></div>
+  <div class="hero__content">
+    <p class="hero__eyebrow">Direction artistique — World-building — Storytelling</p>
+    <h1 class="hero__title">Construire des mondes<br>qu'on n'oublie pas.</h1>
+  </div>
+  <div class="hero__scroll">
+    <span>Scroll</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<main id="projets">
+
+  <article class="project" data-tag="PROJET 01 — MONDES DISPARUS — DIRECTION ARTISTIQUE — VR / 2025">
+    <div class="project__media">
+      <img src="assets/images/mondes-disparus.jpg" alt="Mondes disparus — expérience VR">
+    </div>
+    <div class="project__info">
+      <span class="project__tag"></span>
+      <h2 class="project__title">Mondes disparus</h2>
+      <p class="project__desc">Expérience VR de 45 minutes retraçant 1,5 milliard d'années d'évolution du vivant, en collaboration avec le Muséum d'Histoire Naturelle. Direction artistique, design de personnages et d'architectures.</p>
+      <a href="#" class="project__link">Voir le projet →</a>
+    </div>
+  </article>
+
+  <article class="project project--reverse" data-tag="PROJET 02 — PIRATE SHIP CINEMATIC — IA / 3D / 2025">
+    <div class="project__media">
+      <img src="assets/images/pirate-cinematic.jpg" alt="Séquence cinématique pirate">
+    </div>
+    <div class="project__info">
+      <span class="project__tag"></span>
+      <h2 class="project__title">Pirate Ship Cinematic</h2>
+      <p class="project__desc">Séquence cinématique générée par IA — un personnage traversant un pont en flammes dans une fumée volumétrique orange. Pipeline hybride IA / Cinema 4D / Octane / post-production.</p>
+      <a href="#" class="project__link">Voir le projet →</a>
+    </div>
+  </article>
+
+  <!-- 
+    Pour ajouter un projet : duplique un bloc <article class="project">.
+    Alterne "project" et "project project--reverse" pour l'effet zig-zag.
+    Le contenu de data-tag est injecté automatiquement dans .project__tag par script.js
+  -->
+  <article class="project" data-tag="PROJET 03 — TITRE À COMPLÉTER — TYPE / ANNÉE">
+    <div class="project__media project__media--placeholder">
+      <span>Remplace cette image</span>
+    </div>
+    <div class="project__info">
+      <span class="project__tag"></span>
+      <h2 class="project__title">Nouveau projet</h2>
+      <p class="project__desc">Description courte du projet à compléter.</p>
+      <a href="#" class="project__link">Voir le projet →</a>
+    </div>
+  </article>
+
+</main>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about__inner">
+    <p class="about__label">À propos</p>
+    <p class="about__text">Directeur artistique spécialisé dans la construction de mondes narratifs — de l'expérience immersive au cinéma généré par IA. Je cherche à rejoindre des équipes qui racontent des histoires à travers des univers visuels forts : jeu vidéo, animation, film, publicité.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<footer class="contact" id="contact">
+  <p class="contact__label">Contact</p>
+  <a href="mailto:ton-email@exemple.com" class="contact__email">ton-email@exemple.com</a>
+  <div class="contact__socials">
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">Are.na</a>
+  </div>
+  <p class="contact__copy">© 2026 Xite</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
