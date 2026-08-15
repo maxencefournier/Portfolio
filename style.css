@@ -14,7 +14,7 @@
   --font-display: "halyard-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --side-margin: 7vw;
+  --side-margin: 9vw;
   --gap: 6px;
 }
 
@@ -187,7 +187,7 @@ img { display: block; max-width: 100%; }
 }
 
 .mosaic__inner {
-  max-width: 1280px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -195,22 +195,26 @@ img { display: block; max-width: 100%; }
   display: grid;
   gap: var(--gap);
   margin-bottom: var(--gap);
+  height: clamp(160px, 19vw, 280px);
 }
 
+/* Rangée type "Mondes Disparus / Harmony" : large tuile à gauche, carrée à droite */
 .mosaic__row--two { grid-template-columns: 1.5fr 1fr; }
-.mosaic__row--eye-louis { grid-template-columns: 1.5fr 1fr; align-items: end; }
+
+/* Rangée œil / Louis Vuitton : inversée — carré à gauche (mêmes proportions que Harmony),
+   large tuile à droite (mêmes proportions que Mondes Disparus) */
+.mosaic__row--eye-louis { grid-template-columns: 1fr 1.5fr; }
+
+.mosaic__row--full { grid-template-columns: 1fr; }
 
 .tile {
   position: relative;
   overflow: hidden;
   background: var(--tile-bg);
   display: block;
+  width: 100%;
+  height: 100%;
 }
-
-.tile--wide { aspect-ratio: 4 / 3; }
-.tile--square { aspect-ratio: 1 / 1; }
-.tile--tall { aspect-ratio: 3 / 4; }
-.tile--banner { aspect-ratio: 2.6 / 1; }
 
 .tile img {
   width: 100%;
@@ -236,7 +240,8 @@ img { display: block; max-width: 100%; }
 .tile__label strong { font-weight: 500; }
 
 .mosaic__eye-col {
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -263,9 +268,11 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 760px) {
-  .mosaic__row--two, .mosaic__row--eye-louis { grid-template-columns: 1fr; }
-  .tile--wide, .tile--tall, .tile--banner { aspect-ratio: 4 / 3; }
-  .mosaic__eye-col { aspect-ratio: auto; height: 100px; }
+  .mosaic__row--two, .mosaic__row--eye-louis { grid-template-columns: 1fr; height: auto; }
+  .mosaic__row--two .tile, .mosaic__row--eye-louis .tile, .mosaic__row--eye-louis .mosaic__eye-col {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
 }
 
 /* ============================
