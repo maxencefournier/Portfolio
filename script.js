@@ -58,17 +58,12 @@ setInterval(updateClock, 10000);
 
 /* ============================
    HERO — porte de garage
-   La mosaïque réelle est directement épinglée (position fixed, recadrée)
-   pendant que le hero se rétracte, puis relâchée en flux normal.
-   Un seul élément mosaïque : aucun doublon, donc aucun saut à la bascule.
-============================ */
-/* ============================
-   HERO — porte de garage à rattrapage progressif
-   Le bloc sombre se rétracte de façon linéaire. La mosaïque part en
-   retard (mouvement très lent au début), puis accélère progressivement
-   pour rattraper exactement le mouvement du bloc sombre au moment où
-   celui-ci finit de remonter — recalé mathématiquement pour que les deux
-   se rejoignent pile à zéro écart à la fin, sans à-coup ni bosse.
+   Le bloc sombre se rétracte de façon linéaire au scroll. La mosaïque
+   reste totalement immobile à l'écran tant que le bloc sombre ne l'a
+   pas entièrement révélée (son mouvement naturel de scroll est annulé),
+   comme une image figée derrière un rideau qui remonte. Le décalage
+   s'annule pile à p=1, donc le relâchement vers le scroll natif est
+   invisible — aucun saut, aucune bosse, par construction.
 ============================ */
 const hero = document.getElementById("hero");
 const mosaicEl = document.getElementById("projets");
@@ -82,12 +77,8 @@ function updateHero() {
   hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
-  // Décalage supplémentaire par rapport au scroll naturel : nul à p=0 et p=1,
-  // positif entre les deux (la grille prend du retard puis le rattrape).
-  // amplitude réduite : la grille ne prend qu'un léger retard, pas un décalage massif
-  const lagAmplitude = 0.18;
-  const lag = spacerHeight * lagAmplitude * p * (1 - p * p);
-  mosaicEl.style.transform = "translateY(" + lag + "px)";
+  const stillOffset = spacerHeight * (p - 1);
+  mosaicEl.style.transform = "translateY(" + stillOffset + "px)";
 }
 
 window.addEventListener("scroll", updateHero, { passive: true });
