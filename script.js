@@ -84,7 +84,9 @@ function updateHero() {
 
   // Décalage supplémentaire par rapport au scroll naturel : nul à p=0 et p=1,
   // positif entre les deux (la grille prend du retard puis le rattrape).
-  const lag = spacerHeight * p * (1 - p * p);
+  // amplitude réduite : la grille ne prend qu'un léger retard, pas un décalage massif
+  const lagAmplitude = 0.18;
+  const lag = spacerHeight * lagAmplitude * p * (1 - p * p);
   mosaicEl.style.transform = "translateY(" + lag + "px)";
 }
 
