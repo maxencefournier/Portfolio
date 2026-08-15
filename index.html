@@ -4,60 +4,102 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Maxence Fournier — Direction artistique &amp; world-building</title>
-<meta name="description" content="Portfolio de Maxence Fournier, direction artistique et world-building — VR, cinéma, création de mondes.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Archivo = substitut temporaire de Halyard Display (police payante). Remplace par Halyard si tu as les fichiers. -->
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Portfolio de Maxence Fournier, direction artistique et world-building.">
+
+<!--
+  ⬇⬇⬇ COLLE ICI le code d'intégration Adobe Fonts (Halyard Display) ⬇⬇⬇
+  Généré depuis fonts.adobe.com → Halyard Display → "Add to Web Project"
+  Ça ressemble à : <link rel="stylesheet" href="https://use.typekit.net/xxxxxxx.css">
+-->
+
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <!-- HERO — garage door -->
-<div class="hero-spacer"></div>
+<div class="hero-spacer" id="heroSpacer"></div>
+
+<!-- Couche figée : aperçu de la mosaïque, ne bouge pas tant que le hero ne s'est pas rétracté -->
+<div class="mosaic-frozen" id="mosaicFrozen" aria-hidden="true">
+  <div class="mosaic__row mosaic__row--two">
+    <div class="tile"><img src="Asset/Image/Mondes disparus cover.png" alt=""><span class="tile__label"><strong>Mondes Disparus</strong><br>VR expedition</span></div>
+    <div class="tile"><img src="Asset/Image/Harmony cover.png" alt=""><span class="tile__label"><strong>Harmony</strong><br>Short film</span></div>
+  </div>
+</div>
+
 <header class="hero" id="hero">
+  <div class="hero__top">
+    <p class="hero__intro">Directeur artistique freelance, spécialisé dans la construction de mondes narratifs. Je travaille avec des équipes créatives en France et à l'international.</p>
+    <div class="hero__skills">
+      <div class="hero__skills-col">
+        <span class="hero__skills-label">Direction</span>
+        <span>Art direction</span>
+        <span>World-building</span>
+        <span>Storyboard</span>
+        <span>Concept art</span>
+      </div>
+      <div class="hero__skills-col">
+        <span class="hero__skills-label">Outils</span>
+        <span>Cinema 4D / Octane</span>
+        <span>After Effects</span>
+        <span>Premiere Pro</span>
+        <span>Outils IA</span>
+      </div>
+    </div>
+    <a href="#contact" class="hero__contact-link">Me contacter</a>
+  </div>
+
   <video class="hero__video" autoplay muted loop playsinline>
     <source src="Asset/Video/Mondes disparus Wip 01.mp4" type="video/mp4">
   </video>
+
   <h1 class="hero__name">Maxence Fournier</h1>
 </header>
 
-<!-- MOSAÏQUE -->
+<!-- MOSAÏQUE réelle (défile normalement une fois le hero rétracté) -->
 <main class="mosaic" id="projets">
-  <div class="mosaic__grid">
 
-    <a href="#p-mondes-disparus" class="tile" style="grid-column: span 7; grid-row: span 1;">
+  <div class="mosaic__row mosaic__row--two">
+    <a href="#" class="tile">
       <img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus">
       <span class="tile__label"><strong>Mondes Disparus</strong><br>VR expedition</span>
     </a>
-
-    <a href="#p-harmony" class="tile" style="grid-column: span 5; grid-row: span 1;">
+    <a href="#" class="tile">
       <img src="Asset/Image/Harmony cover.png" alt="Harmony">
       <span class="tile__label"><strong>Harmony</strong><br>Short film</span>
     </a>
+  </div>
 
-    <div class="tile tile--eye-wrap" style="grid-column: span 2; grid-row: span 1;">
+  <div class="mosaic__row mosaic__row--eye-louis">
+    <div class="mosaic__eye-col">
       <div class="eye" id="eye">
         <div class="eye__pupil" id="eyePupil"></div>
       </div>
     </div>
-
-    <a href="#p-louis-vuitton" class="tile" style="grid-column: span 10; grid-row: span 1;">
-      <img src="Asset/Image/Louis Vuitton cover.png" alt="Louis Vuitton">
-      <span class="tile__label"><strong>Louis Vuitton</strong><br>VR expedition</span>
+    <a href="#" class="tile tile--tall">
+      <img src="Asset/Image/Louis Vuitton cover.jpeg" alt="Louis Vuitton">
+      <span class="tile__label"><strong>Louis Vuitton - Asnières</strong><br>VR expedition</span>
     </a>
+  </div>
 
-    <a href="#p-somehow" class="tile" style="grid-column: span 12; grid-row: span 1;">
+  <div class="mosaic__row mosaic__row--full">
+    <a href="#" class="tile">
       <img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there">
       <span class="tile__label"><strong>Somehow you'll get there</strong><br>Illustration</span>
     </a>
-
-    <a href="#p-eternelle-notre-dame" class="tile" style="grid-column: span 12; grid-row: span 1;">
-      <img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame">
-      <span class="tile__label"><strong>Éternelle Notre-Dame</strong><br>VR expedition</span>
-    </a>
-
   </div>
+
+  <div class="mosaic__row mosaic__row--two">
+    <a href="#" class="tile">
+      <img src="Asset/Image/L'horizon de kheops cover.png" alt="L'Horizon de Kheops">
+      <span class="tile__label"><strong>L'Horizon de Kheops</strong><br>VR expedition</span>
+    </a>
+    <a href="#" class="tile">
+      <img src="Asset/Image/Case chance cover.jpeg" alt="Case Chance">
+      <span class="tile__label"><strong>Case Chance</strong><br>Music clip</span>
+    </a>
+  </div>
+
 </main>
 
 <!-- CITATION -->
@@ -65,54 +107,9 @@
   <p class="quote__text">« Remplace ce texte par ta propre citation ici. »</p>
 </section>
 
-<!-- DÉTAILS PROJETS -->
-<section class="details">
-
-  <article class="project" id="p-mondes-disparus">
-    <div class="project__media"><img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus"></div>
-    <div class="project__info">
-      <span class="project__eyebrow">Direction artistique — VR</span>
-      <h2 class="project__title">Mondes disparus</h2>
-      <p class="project__desc">Expérience VR de 45 minutes retraçant 1,5 milliard d'années d'évolution du vivant, en collaboration avec le Muséum d'Histoire Naturelle. Direction artistique, design de personnages et d'architectures.</p>
-    </div>
-  </article>
-
-  <article class="project project--reverse" id="p-harmony">
-    <div class="project__media"><img src="Asset/Image/Harmony cover.png" alt="Harmony"></div>
-    <div class="project__info">
-      <span class="project__eyebrow">Storyboard — Concept art — Moyen métrage</span>
-      <h2 class="project__title">Harmony</h2>
-      <p class="project__desc">Moyen métrage de science-fiction où un personnage tombe amoureux d'une sex doll dans une campagne reculée de France. Storyboard aux côtés des scénaristes et du réalisateur pour construire un script solide, et concept art du personnage robot.</p>
-    </div>
-  </article>
-
-  <article class="project" id="p-louis-vuitton">
-    <div class="project__media"><img src="Asset/Image/Louis Vuitton cover.png" alt="Louis Vuitton"></div>
-    <div class="project__info">
-      <span class="project__eyebrow">Direction artistique — VR — 2 opus</span>
-      <h2 class="project__title">Louis Vuitton</h2>
-      <p class="project__desc">Projet VR en deux opus incarnant les valeurs de la maison en donnant à voir la richesse de ses métiers d'artisanat. Scénario construit via storyboard, scènes conçues comme des tableaux surréalistes mettant en scène les savoir-faire de façon poétique — un paysage d'émail, un canyon de métal gravé.</p>
-    </div>
-  </article>
-
-  <article class="project project--reverse" id="p-somehow">
-    <div class="project__media"><img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there"></div>
-    <div class="project__info">
-      <span class="project__eyebrow">Illustration — Projet personnel</span>
-      <h2 class="project__title">Somehow you'll get there</h2>
-      <p class="project__desc">Série d'illustrations dessinées à la main, mettant en scène des personnages perdus dans d'immenses déserts sans jamais se croiser. Chacun tente, avec des technologies ultra poussées, de trouver son chemin — mais la vérité, c'est qu'il n'y en a pas vraiment, et chacun est condamné à errer seul.</p>
-    </div>
-  </article>
-
-  <article class="project" id="p-eternelle-notre-dame">
-    <div class="project__media"><img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame"></div>
-    <div class="project__info">
-      <span class="project__eyebrow">VR</span>
-      <h2 class="project__title">Éternelle Notre-Dame</h2>
-      <p class="project__desc">Expérience VR retraçant l'histoire de la cathédrale et donnant accès à des lieux inaccessibles de son architecture.</p>
-    </div>
-  </article>
-
+<!-- IMAGE UNIQUE SOUS LA CITATION -->
+<section class="closing-image">
+  <img src="Asset/Image/Process board storyboard.png" alt="Process board">
 </section>
 
 <!-- CONTACT -->

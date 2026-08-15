@@ -1,23 +1,37 @@
 /* ============================
-   HERO — effet "porte de garage"
+   HERO — porte de garage à deux couches
+   Couche 1 (dessous, fixe) : aperçu figé de la mosaïque
+   Couche 2 (dessus, fixe) : le bloc sombre qui se rétracte
+   Une fois rétracté : bascule vers la vraie mosaïque en flux normal
 ============================ */
 const hero = document.getElementById("hero");
-let heroHeight = window.innerHeight;
+const mosaicFrozen = document.getElementById("mosaicFrozen");
+const heroSpacer = document.getElementById("heroSpacer");
+
+let spacerHeight = heroSpacer.offsetHeight;
 
 function updateHero() {
-  const progress = Math.min(Math.max(window.scrollY / heroHeight, 0), 1);
+  const progress = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   hero.style.transform = "translateY(-" + (progress * 100) + "%)";
+
+  if (progress >= 1) {
+    mosaicFrozen.style.visibility = "hidden";
+    hero.style.pointerEvents = "none";
+  } else {
+    mosaicFrozen.style.visibility = "visible";
+    hero.style.pointerEvents = "auto";
+  }
 }
 
 window.addEventListener("scroll", updateHero, { passive: true });
 window.addEventListener("resize", () => {
-  heroHeight = window.innerHeight;
+  spacerHeight = heroSpacer.offsetHeight;
   updateHero();
 });
 updateHero();
 
 /* ============================
-   ŒIL — suit le curseur, grossit au survol
+   ŒIL — suit le curseur, x2 au survol, coins nets
 ============================ */
 const eye = document.getElementById("eye");
 const pupil = document.getElementById("eyePupil");
@@ -26,14 +40,14 @@ if (eye && pupil) {
   let targetX = 0, targetY = 0;
   let currentX = 0, currentY = 0;
   let targetScale = 1, currentScale = 1;
-  const maxOffset = 32; // distance max que le petit carré peut parcourir
+  const maxOffset = 26;
 
   document.addEventListener("mousemove", (e) => {
     const rect = eye.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    let dx = e.clientX - cx;
-    let dy = e.clientY - cy;
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
     const dist = Math.sqrt(dx * dx + dy * dy);
     const clampedDist = Math.min(dist, maxOffset);
     const angle = Math.atan2(dy, dx);
@@ -41,7 +55,7 @@ if (eye && pupil) {
     targetY = Math.sin(angle) * clampedDist;
   });
 
-  eye.addEventListener("mouseenter", () => { targetScale = 3; });
+  eye.addEventListener("mouseenter", () => { targetScale = 2; });
   eye.addEventListener("mouseleave", () => { targetScale = 1; });
 
   function animateEye() {
@@ -57,7 +71,7 @@ if (eye && pupil) {
 }
 
 /* ============================
-   REVEAL AU SCROLL (citation + projets détaillés)
+   REVEAL AU SCROLL — citation
 ============================ */
 const observer = new IntersectionObserver(
   (entries) => {
@@ -71,4 +85,4 @@ const observer = new IntersectionObserver(
   { threshold: 0.15 }
 );
 
-document.querySelectorAll(".project, .quote").forEach((el) => observer.observe(el));
+document.querySelectorAll(".quote").forEach((el) => observer.observe(el));

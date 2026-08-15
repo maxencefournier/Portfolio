@@ -3,27 +3,22 @@
 ============================ */
 :root {
   --bg: #f2f1ee;
-  --hero-bg: #0d0d0d;
+  --hero-bg: #111111;
   --ink: #111111;
   --ink-dim: #8a8a85;
   --tile-bg: #e4e2dc;
   --line: #e2e0da;
 
-  /* Halyard Display est une police payante : Archivo en substitut temporaire. */
-  --font-display: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Halyard Display : collé via le kit Adobe Fonts dans le <head>.
+     "halyard-display" est le nom de famille habituel fourni par Adobe — adapte si besoin. */
+  --font-display: "halyard-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 32px;
-  --space-4: 64px;
-  --space-5: 120px;
-
-  --hero-vh: 100vh;
+  --side-margin: 4vw;
+  --gap: 6px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -45,80 +40,135 @@ img { display: block; max-width: 100%; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* ============================
-   HERO — garage door
+   HERO — porte de garage
 ============================ */
-.hero-spacer {
-  height: var(--hero-vh);
+.hero-spacer { height: 100vh; }
+
+.mosaic-frozen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 20;
+  background: var(--bg);
+  overflow: hidden;
+  padding: var(--side-margin);
 }
 
 .hero {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100%;
-  height: var(--hero-vh);
+  height: 100vh;
   background: var(--hero-bg);
-  z-index: 50;
+  z-index: 30;
   overflow: hidden;
   will-change: transform;
-  /* transform contrôlé en JS pendant le scroll — effet "porte de garage" */
+}
+
+.hero__top {
+  position: absolute;
+  top: 4%;
+  left: var(--side-margin);
+  right: var(--side-margin);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--side-margin);
+  color: #fff;
+}
+
+.hero__intro {
+  max-width: 320px;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: #d8d8d5;
+}
+
+.hero__skills {
+  display: flex;
+  gap: 48px;
+  font-size: 0.85rem;
+}
+
+.hero__skills-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #d8d8d5;
+}
+
+.hero__skills-label { color: #fff; margin-bottom: 4px; }
+
+.hero__contact-link {
+  font-size: 0.85rem;
+  color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  white-space: nowrap;
+  height: fit-content;
 }
 
 .hero__video {
   position: absolute;
-  top: 8%;
-  left: 6%;
+  top: 15%;
+  left: var(--side-margin);
   width: 34%;
   max-width: 480px;
-  border-radius: 2px;
-  z-index: 1;
 }
 
 .hero__name {
   position: absolute;
   left: 0;
-  bottom: 4%;
+  bottom: 2%;
   width: 100%;
-  padding: 0 4%;
+  padding: 0 3%;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 500;
   color: #fff;
-  font-size: clamp(2.6rem, 9vw, 8rem);
+  font-size: clamp(2.6rem, 8.5vw, 7.5rem);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
-@media (max-width: 700px) {
-  .hero__name { white-space: normal; font-size: clamp(2rem, 12vw, 4rem); bottom: 6%; }
-  .hero__video { width: 60%; top: 10%; }
+@media (max-width: 760px) {
+  .hero__top { flex-direction: column; gap: 16px; }
+  .hero__skills { display: none; }
+  .hero__video { width: 60%; top: 22%; }
+  .hero__name { white-space: normal; font-size: clamp(2rem, 11vw, 3.5rem); bottom: 4%; }
 }
 
 /* ============================
-   MOSAIC
+   MOSAIC — commun (figé + réel)
 ============================ */
+.mosaic-frozen .mosaic__row,
+.mosaic .mosaic__row {
+  display: flex;
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
 .mosaic {
   position: relative;
   z-index: 1;
   background: var(--bg);
-  padding: 4px;
-}
-
-.mosaic__grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4px;
-  max-width: 1600px;
-  margin: 0 auto;
+  padding: var(--side-margin);
+  padding-top: 0;
 }
 
 .tile {
   position: relative;
-  height: 460px;
+  flex: 1;
+  height: 46vw;
+  max-height: 500px;
+  min-height: 260px;
   overflow: hidden;
   background: var(--tile-bg);
   display: block;
 }
+
+.mosaic__row--two .tile:first-child { flex: 1.35; }
+.mosaic__row--two .tile:last-child { flex: 1; }
 
 .tile img {
   width: 100%;
@@ -132,30 +182,45 @@ img { display: block; max-width: 100%; }
 .tile__label {
   position: absolute;
   left: 20px;
-  bottom: 18px;
+  bottom: 16px;
   color: #fff;
   font-family: var(--font-body);
   font-weight: 300;
   font-size: 0.95rem;
-  line-height: 1.35;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+  line-height: 1.3;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
 }
 
 .tile__label strong { font-weight: 500; }
 
-.tile--eye-wrap {
-  background: transparent;
+/* Ligne œil + Louis Vuitton */
+.mosaic__row--eye-louis {
+  align-items: flex-end;
+}
+
+.mosaic__eye-col {
+  flex: 1.35;
+  height: 62vw;
+  max-height: 680px;
+  min-height: 320px;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: 0 0 20px 4px;
+  padding-bottom: 4px;
+}
+
+.tile--tall {
+  flex: 1;
+  height: 62vw;
+  max-height: 680px;
+  min-height: 320px;
 }
 
 .eye {
-  width: 110px;
-  height: 110px;
-  background: #0d0d0d;
-  border-radius: 4px;
+  width: 90px;
+  height: 90px;
+  background: #111111;
+  border-radius: 0;
   position: relative;
   display: flex;
   align-items: center;
@@ -164,18 +229,17 @@ img { display: block; max-width: 100%; }
 }
 
 .eye__pupil {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: #fff;
-  border-radius: 2px;
+  border-radius: 0;
   transform: translate(0, 0) scale(1);
-  transition: transform 0.15s ease-out;
 }
 
-@media (max-width: 700px) {
-  .mosaic__grid { grid-template-columns: repeat(6, 1fr); }
-  .tile { height: 260px; grid-column: span 6 !important; }
-  .tile--eye-wrap { height: 140px; }
+@media (max-width: 760px) {
+  .mosaic__row--two, .mosaic__row--eye-louis { flex-direction: column; }
+  .tile, .tile--tall, .mosaic__eye-col { height: 62vw; max-height: 380px; }
+  .mosaic-frozen { display: none; }
 }
 
 /* ============================
@@ -184,7 +248,7 @@ img { display: block; max-width: 100%; }
 .quote {
   max-width: 900px;
   margin: 0 auto;
-  padding: var(--space-5) var(--space-3);
+  padding: 100px var(--side-margin);
   text-align: center;
   opacity: 0;
   transform: translateY(24px);
@@ -197,113 +261,63 @@ img { display: block; max-width: 100%; }
   font-family: var(--font-body);
   font-weight: 700;
   font-style: oblique;
-  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+  font-size: clamp(1.3rem, 3vw, 2rem);
   line-height: 1.45;
-  color: var(--ink);
 }
 
 /* ============================
-   PROJECT DETAILS
+   IMAGE DE FERMETURE
 ============================ */
-.details { padding-top: var(--space-3); }
-
-.project {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-5) var(--space-4);
-  max-width: 1400px;
-  margin: 0 auto;
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+.closing-image {
+  max-width: 900px;
+  margin: 0 auto 100px;
+  padding: 0 var(--side-margin);
 }
 
-.project.is-visible { opacity: 1; transform: translateY(0); }
-
-.project--reverse { grid-template-columns: 1fr 1.3fr; }
-.project--reverse .project__media { order: 2; }
-.project--reverse .project__info { order: 1; }
-
-.project__media { aspect-ratio: 4/5; overflow: hidden; background: var(--tile-bg); }
-.project__media img { width: 100%; height: 100%; object-fit: cover; }
-
-.project__eyebrow {
-  display: block;
-  font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
-  margin-bottom: var(--space-2);
-}
-
-.project__title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.6rem, 3vw, 2.4rem);
-  margin-bottom: var(--space-2);
-}
-
-.project__desc { color: #444; font-size: 0.95rem; max-width: 42ch; font-weight: 300; }
+.closing-image img { width: 100%; height: auto; }
 
 /* ============================
    CONTACT
 ============================ */
 .contact {
-  padding: var(--space-5) var(--space-4) var(--space-4);
-  border-top: 1px solid var(--line);
+  padding: 100px var(--side-margin) 48px;
+  background: var(--hero-bg);
+  color: #fff;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-2);
+  gap: 16px;
 }
 
 .contact__label {
-  font-family: var(--font-body);
-  font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: #9a9a96;
 }
 
 .contact__email {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 5vw, 3rem);
-  font-weight: 600;
+  font-weight: 500;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
 
-.contact__email:hover { border-color: var(--ink); }
+.contact__email:hover { border-color: #fff; }
 
 .contact__socials {
   display: flex;
-  gap: var(--space-3);
-  font-family: var(--font-body);
+  gap: 24px;
   font-size: 0.85rem;
-  color: var(--ink-dim);
-  margin-top: var(--space-2);
+  color: #9a9a96;
+  margin-top: 8px;
 }
 
-.contact__socials a:hover { color: var(--ink); }
+.contact__socials a:hover { color: #fff; }
 
 .contact__copy {
-  font-family: var(--font-body);
   font-size: 0.75rem;
-  color: var(--ink-dim);
-  margin-top: var(--space-3);
-}
-
-@media (max-width: 700px) {
-  .project, .project--reverse {
-    grid-template-columns: 1fr;
-    padding: var(--space-4) var(--space-2);
-    gap: var(--space-2);
-  }
-  .project--reverse .project__media, .project--reverse .project__info { order: initial; }
-  .contact { padding-left: var(--space-2); padding-right: var(--space-2); }
+  color: #9a9a96;
+  margin-top: 16px;
 }
