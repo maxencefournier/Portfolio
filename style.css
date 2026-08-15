@@ -40,6 +40,27 @@ img { display: block; max-width: 100%; }
 :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* ============================
+   CURSEUR EN CROIX — visible uniquement dans le bloc sombre
+============================ */
+.hero { cursor: none; }
+
+.crosshair-v,
+.crosshair-h {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.crosshair-v { top: 0; width: 1px; height: 100vh; }
+.crosshair-h { left: 0; height: 1px; width: 100vw; }
+
+.crosshair-v.is-active,
+.crosshair-h.is-active { opacity: 1; }
+
+/* ============================
    HERO — porte de garage
 ============================ */
 .hero-spacer { height: 100vh; }

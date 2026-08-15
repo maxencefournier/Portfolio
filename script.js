@@ -1,4 +1,25 @@
 /* ============================
+   CURSEUR EN CROIX
+============================ */
+const crosshairV = document.getElementById("crosshairV");
+const crosshairH = document.getElementById("crosshairH");
+
+if (crosshairV && crosshairH) {
+  document.addEventListener("mousemove", (e) => {
+    const overHero = e.target.closest(".hero");
+    if (overHero) {
+      crosshairV.style.left = e.clientX + "px";
+      crosshairH.style.top = e.clientY + "px";
+      crosshairV.classList.add("is-active");
+      crosshairH.classList.add("is-active");
+    } else {
+      crosshairV.classList.remove("is-active");
+      crosshairH.classList.remove("is-active");
+    }
+  });
+}
+
+/* ============================
    NOM DU HERO — remplit toujours exactement la largeur de l'écran
 ============================ */
 const heroName = document.getElementById("heroName");
