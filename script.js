@@ -57,33 +57,47 @@ updateClock();
 setInterval(updateClock, 10000);
 
 /* ============================
-   HERO — porte de garage à deux couches
-   Couche 1 (dessous, fixe) : aperçu figé de la mosaïque
-   Couche 2 (dessus, fixe) : le bloc sombre qui se rétracte
-   Une fois rétracté : bascule vers la vraie mosaïque en flux normal
+   HERO — porte de garage
+   La mosaïque réelle est directement épinglée (position fixed, recadrée)
+   pendant que le hero se rétracte, puis relâchée en flux normal.
+   Un seul élément mosaïque : aucun doublon, donc aucun saut à la bascule.
 ============================ */
 const hero = document.getElementById("hero");
-const mosaicFrozen = document.getElementById("mosaicFrozen");
+const mosaicEl = document.getElementById("projets");
+const mosaicSpace = document.getElementById("mosaicSpace");
 const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
+
+function measureMosaicHeight() {
+  // Mesure la hauteur naturelle de la mosaïque (hors épinglage) pour que
+  // le conteneur réserve toujours cet espace, même quand la mosaïque
+  // passe en position fixed — ça évite tout saut au relâchement.
+  const wasPinned = mosaicEl.classList.contains("mosaic--pinned");
+  mosaicEl.classList.remove("mosaic--pinned");
+  const naturalHeight = mosaicEl.offsetHeight;
+  mosaicSpace.style.height = naturalHeight + "px";
+  if (wasPinned) mosaicEl.classList.add("mosaic--pinned");
+}
 
 function updateHero() {
   const progress = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   hero.style.transform = "translateY(-" + (progress * 100) + "%)";
 
   if (progress >= 1) {
-    mosaicFrozen.style.visibility = "hidden";
+    mosaicEl.classList.remove("mosaic--pinned");
     hero.style.pointerEvents = "none";
   } else {
-    mosaicFrozen.style.visibility = "visible";
+    mosaicEl.classList.add("mosaic--pinned");
     hero.style.pointerEvents = "auto";
   }
 }
 
+measureMosaicHeight();
 window.addEventListener("scroll", updateHero, { passive: true });
 window.addEventListener("resize", () => {
   spacerHeight = heroSpacer.offsetHeight;
+  measureMosaicHeight();
   updateHero();
 });
 updateHero();

@@ -14,7 +14,7 @@
   --font-display: "halyard-display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-  --side-margin: 4vw;
+  --side-margin: 7vw;
   --gap: 6px;
 }
 
@@ -65,15 +65,13 @@ img { display: block; max-width: 100%; }
 ============================ */
 .hero-spacer { height: 100vh; }
 
-.mosaic-frozen {
+.mosaic--pinned {
   position: fixed;
   top: 0; left: 0;
   width: 100%;
   height: 100vh;
   z-index: 20;
-  background: var(--bg);
   overflow: hidden;
-  padding: var(--side-margin);
 }
 
 .hero {
@@ -177,36 +175,42 @@ img { display: block; max-width: 100%; }
 }
 
 /* ============================
-   MOSAIC — commun (figé + réel)
+   MOSAIC
 ============================ */
-.mosaic-frozen .mosaic__row,
-.mosaic .mosaic__row {
-  display: flex;
-  gap: var(--gap);
-  margin-bottom: var(--gap);
-}
+.mosaic-space { position: relative; }
 
 .mosaic {
   position: relative;
   z-index: 1;
   background: var(--bg);
-  padding: var(--side-margin);
-  padding-top: 0;
+  padding: 0 var(--side-margin);
 }
+
+.mosaic__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.mosaic__row {
+  display: grid;
+  gap: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.mosaic__row--two { grid-template-columns: 1.5fr 1fr; }
+.mosaic__row--eye-louis { grid-template-columns: 1.5fr 1fr; align-items: end; }
 
 .tile {
   position: relative;
-  flex: 1;
-  height: 46vw;
-  max-height: 500px;
-  min-height: 260px;
   overflow: hidden;
   background: var(--tile-bg);
   display: block;
 }
 
-.mosaic__row--two .tile:first-child { flex: 1.35; }
-.mosaic__row--two .tile:last-child { flex: 1; }
+.tile--wide { aspect-ratio: 4 / 3; }
+.tile--square { aspect-ratio: 1 / 1; }
+.tile--tall { aspect-ratio: 3 / 4; }
+.tile--banner { aspect-ratio: 2.6 / 1; }
 
 .tile img {
   width: 100%;
@@ -219,39 +223,23 @@ img { display: block; max-width: 100%; }
 
 .tile__label {
   position: absolute;
-  left: 20px;
-  bottom: 16px;
+  left: 16px;
+  bottom: 14px;
   color: #fff;
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1.3;
   text-shadow: 0 1px 8px rgba(0,0,0,0.4);
 }
 
 .tile__label strong { font-weight: 500; }
 
-/* Ligne œil + Louis Vuitton */
-.mosaic__row--eye-louis {
-  align-items: flex-end;
-}
-
 .mosaic__eye-col {
-  flex: 1.35;
-  height: 62vw;
-  max-height: 680px;
-  min-height: 320px;
+  aspect-ratio: 1 / 1;
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding-bottom: 4px;
-}
-
-.tile--tall {
-  flex: 1;
-  height: 62vw;
-  max-height: 680px;
-  min-height: 320px;
+  align-items: center;
+  justify-content: center;
 }
 
 .eye {
@@ -275,9 +263,9 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 760px) {
-  .mosaic__row--two, .mosaic__row--eye-louis { flex-direction: column; }
-  .tile, .tile--tall, .mosaic__eye-col { height: 62vw; max-height: 380px; }
-  .mosaic-frozen { display: none; }
+  .mosaic__row--two, .mosaic__row--eye-louis { grid-template-columns: 1fr; }
+  .tile--wide, .tile--tall, .tile--banner { aspect-ratio: 4 / 3; }
+  .mosaic__eye-col { aspect-ratio: auto; height: 100px; }
 }
 
 /* ============================

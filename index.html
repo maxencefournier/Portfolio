@@ -15,14 +15,6 @@
 <!-- HERO — garage door -->
 <div class="hero-spacer" id="heroSpacer"></div>
 
-<!-- Couche figée : aperçu de la mosaïque, ne bouge pas tant que le hero ne s'est pas rétracté -->
-<div class="mosaic-frozen" id="mosaicFrozen" aria-hidden="true">
-  <div class="mosaic__row mosaic__row--two">
-    <div class="tile"><img src="Asset/Image/Mondes disparus cover.png" alt=""><span class="tile__label"><strong>Mondes Disparus</strong><br>VR expedition</span></div>
-    <div class="tile"><img src="Asset/Image/Harmony cover.png" alt=""><span class="tile__label"><strong>Harmony</strong><br>Short film</span></div>
-  </div>
-</div>
-
 <header class="hero" id="hero">
   <div class="hero__top">
     <div class="hero__clock" id="heroClock">
@@ -60,14 +52,15 @@
 </header>
 
 <!-- MOSAÏQUE réelle (défile normalement une fois le hero rétracté) -->
+<div class="mosaic-space" id="mosaicSpace">
 <main class="mosaic" id="projets">
-
+<div class="mosaic__inner">
   <div class="mosaic__row mosaic__row--two">
-    <a href="#" class="tile">
+    <a href="#" class="tile tile--wide">
       <img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus">
       <span class="tile__label"><strong>Mondes Disparus</strong><br>VR expedition</span>
     </a>
-    <a href="#" class="tile">
+    <a href="#" class="tile tile--square">
       <img src="Asset/Image/Harmony cover.png" alt="Harmony">
       <span class="tile__label"><strong>Harmony</strong><br>Short film</span>
     </a>
@@ -86,24 +79,26 @@
   </div>
 
   <div class="mosaic__row mosaic__row--full">
-    <a href="#" class="tile">
+    <a href="#" class="tile tile--banner">
       <img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there">
       <span class="tile__label"><strong>Somehow you'll get there</strong><br>Illustration</span>
     </a>
   </div>
 
   <div class="mosaic__row mosaic__row--two">
-    <a href="#" class="tile">
+    <a href="#" class="tile tile--wide">
       <img src="Asset/Image/L'horizon de kheops cover.png" alt="L'Horizon de Kheops">
       <span class="tile__label"><strong>L'Horizon de Kheops</strong><br>VR expedition</span>
     </a>
-    <a href="#" class="tile">
+    <a href="#" class="tile tile--square">
       <img src="Asset/Image/Case chance cover.jpeg" alt="Case Chance">
       <span class="tile__label"><strong>Case Chance</strong><br>Music clip</span>
     </a>
   </div>
 
+</div>
 </main>
+</div>
 
 <!-- CITATION -->
 <section class="quote" id="quote">
