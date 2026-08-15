@@ -59,11 +59,12 @@ setInterval(updateClock, 10000);
 /* ============================
    HERO — porte de garage
    Le bloc sombre se rétracte de façon linéaire au scroll. La mosaïque
-   reste totalement immobile à l'écran tant que le bloc sombre ne l'a
-   pas entièrement révélée (son mouvement naturel de scroll est annulé),
-   comme une image figée derrière un rideau qui remonte. Le décalage
-   s'annule pile à p=1, donc le relâchement vers le scroll natif est
-   invisible — aucun saut, aucune bosse, par construction.
+   prend de l'avance dès le tout début du scroll (elle démarre donc
+   déjà bien plus haute que sa position naturelle), puis ralentit en
+   douceur pour rejoindre exactement la position ET la vitesse du bloc
+   sombre pile au moment où celui-ci finit de remonter — aucun saut,
+   aucune bosse, par construction (la courbe et sa dérivée s'annulent
+   toutes les deux à p=1).
 ============================ */
 const hero = document.getElementById("hero");
 const mosaicEl = document.getElementById("projets");
@@ -77,8 +78,12 @@ function updateHero() {
   hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
-  const stillOffset = spacerHeight * (p - 1);
-  mosaicEl.style.transform = "translateY(" + stillOffset + "px)";
+  // Avance (valeur négative = la mosaïque monte plus vite que le scroll naturel).
+  // Nulle à p=0 et p=1, avec une dérivée également nulle à p=1 : la vitesse
+  // se resynchronise en douceur, pas seulement la position.
+  const amplitude = 1;
+  const lead = -spacerHeight * amplitude * p * (1 - p) * (1 - p);
+  mosaicEl.style.transform = "translateY(" + lead + "px)";
 }
 
 window.addEventListener("scroll", updateHero, { passive: true });
