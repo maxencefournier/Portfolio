@@ -63,33 +63,21 @@ setInterval(updateClock, 10000);
    Un seul élément mosaïque : aucun doublon, donc aucun saut à la bascule.
 ============================ */
 /* ============================
-   HERO — porte de garage à fondu continu
-   Le bloc sombre se rétracte de façon linéaire. La mosaïque, elle,
-   reste visuellement figée au début (via un contre-décalage qui annule
-   son mouvement naturel de scroll), puis rattrape progressivement ce
-   mouvement pour finir exactement synchronisée — sans aucune bascule
-   d'état, donc aucun saut ni interstice visible.
+   HERO — porte de garage
+   Le bloc sombre se rétracte de façon linéaire au scroll. La mosaïque,
+   elle, n'est jamais touchée en JS : elle suit le scroll natif du
+   navigateur, ce qui la fait apparaître par le bas dès le début —
+   fluide par construction, sans latence ni à-coup possible.
 ============================ */
 const hero = document.getElementById("hero");
-const mosaicEl = document.getElementById("projets");
 const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
 
-function easeInCubic(p) {
-  return p * p * p;
-}
-
 function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
-
   hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
-
-  const eased = easeInCubic(p);
-  const naturalOffset = spacerHeight * (1 - p);
-  const counterOffset = naturalOffset * (eased - 1);
-  mosaicEl.style.transform = "translateY(" + counterOffset + "px)";
 }
 
 window.addEventListener("scroll", updateHero, { passive: true });

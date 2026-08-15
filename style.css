@@ -173,7 +173,6 @@ img { display: block; max-width: 100%; }
   z-index: 1;
   background: var(--bg);
   padding: 0 var(--side-margin);
-  will-change: transform;
 }
 
 .mosaic__inner {
