@@ -58,19 +58,27 @@ setInterval(updateClock, 10000);
 
 /* ============================
    HERO — porte de garage
-   Le bloc sombre se rétracte de façon linéaire au scroll. La mosaïque
-   prend de l'avance dès le tout début du scroll (elle démarre donc
-   déjà bien plus haute que sa position naturelle), puis ralentit en
-   douceur pour rejoindre exactement la position ET la vitesse du bloc
-   sombre pile au moment où celui-ci finit de remonter — aucun saut,
-   aucune bosse, par construction (la courbe et sa dérivée s'annulent
-   toutes les deux à p=1).
+   La position de repos native de la grille (avant tout scroll) est
+   calculée pour que le bas de la première rangée touche exactement le
+   bas de l'écran — aucune animation ne l'y amène, c'est sa position de
+   départ réelle dans la page. Une fois le scroll commencé, la grille
+   se déplace plus lentement que le bloc sombre au début, puis accélère
+   progressivement pour se resynchroniser en position ET en vitesse
+   pile au moment où le bloc sombre finit de remonter.
 ============================ */
 const hero = document.getElementById("hero");
 const mosaicEl = document.getElementById("projets");
+const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
+
+function updateSpacerHeight() {
+  const rowHeight = mosaicFirstRow.offsetHeight;
+  const target = window.innerHeight - rowHeight;
+  spacerHeight = Math.max(target, 0);
+  heroSpacer.style.height = spacerHeight + "px";
+}
 
 function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
@@ -78,17 +86,19 @@ function updateHero() {
   hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
-  // Avance (valeur négative = la mosaïque monte plus vite que le scroll naturel).
-  // Nulle à p=0 et p=1, avec une dérivée également nulle à p=1 : la vitesse
-  // se resynchronise en douceur, pas seulement la position.
+  // Retard par rapport au scroll naturel : nul à p=0 et p=1, positif entre les
+  // deux, avec une pente également nulle à p=1 — la grille démarre à sa
+  // position native, prend du retard, puis rejoint position ET vitesse du
+  // bloc sombre exactement à la fin.
   const amplitude = 1;
-  const lead = -spacerHeight * amplitude * p * (1 - p) * (1 - p);
-  mosaicEl.style.transform = "translateY(" + lead + "px)";
+  const lag = spacerHeight * amplitude * p * (1 - p) * (1 - p);
+  mosaicEl.style.transform = "translateY(" + lag + "px)";
 }
 
+updateSpacerHeight();
 window.addEventListener("scroll", updateHero, { passive: true });
 window.addEventListener("resize", () => {
-  spacerHeight = heroSpacer.offsetHeight;
+  updateSpacerHeight();
   updateHero();
 });
 updateHero();

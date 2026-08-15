@@ -63,7 +63,7 @@ img { display: block; max-width: 100%; }
 /* ============================
    HERO — porte de garage
 ============================ */
-.hero-spacer { height: 100vh; }
+.hero-spacer { height: 60vh; }
 
 .hero {
   position: fixed;
