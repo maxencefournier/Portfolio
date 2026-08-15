@@ -123,7 +123,7 @@ img { display: block; max-width: 100%; }
   width: 100%;
   padding: 0 3%;
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 300;
   color: #fff;
   font-size: clamp(2.6rem, 8.5vw, 7.5rem);
   line-height: 1;
@@ -299,7 +299,7 @@ img { display: block; max-width: 100%; }
 .contact__email {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 5vw, 3rem);
-  font-weight: 500;
+  font-weight: 300;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease;
 }
