@@ -195,16 +195,13 @@ img { display: block; max-width: 100%; }
   display: grid;
   gap: var(--gap);
   margin-bottom: var(--gap);
-  height: clamp(160px, 19vw, 280px);
 }
 
-/* Rangée type "Mondes Disparus / Harmony" : large tuile à gauche, carrée à droite */
-.mosaic__row--two { grid-template-columns: 1.5fr 1fr; }
-
-/* Rangée œil / Louis Vuitton : inversée — carré à gauche (mêmes proportions que Harmony),
-   large tuile à droite (mêmes proportions que Mondes Disparus) */
-.mosaic__row--eye-louis { grid-template-columns: 1fr 1.5fr; }
-
+/* Les fr sont calés exactement sur le ratio 1430/900 (≈1.589) des tuiles "larges",
+   pour 1 (carré) des tuiles carrées — la hauteur en découle automatiquement et
+   correspond donc exactement entre les tuiles d'une même rangée. */
+.mosaic__row--two { grid-template-columns: 1.589fr 1fr; }
+.mosaic__row--eye-louis { grid-template-columns: 1fr 1.589fr; }
 .mosaic__row--full { grid-template-columns: 1fr; }
 
 .tile {
@@ -213,8 +210,11 @@ img { display: block; max-width: 100%; }
   background: var(--tile-bg);
   display: block;
   width: 100%;
-  height: 100%;
 }
+
+.tile--wide { aspect-ratio: 1430 / 900; }
+.tile--square { aspect-ratio: 1 / 1; }
+.tile--banner { aspect-ratio: 1850 / 697; }
 
 .tile img {
   width: 100%;
@@ -241,7 +241,7 @@ img { display: block; max-width: 100%; }
 
 .mosaic__eye-col {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -268,11 +268,7 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 760px) {
-  .mosaic__row--two, .mosaic__row--eye-louis { grid-template-columns: 1fr; height: auto; }
-  .mosaic__row--two .tile, .mosaic__row--eye-louis .tile, .mosaic__row--eye-louis .mosaic__eye-col {
-    aspect-ratio: 4 / 3;
-    height: auto;
-  }
+  .mosaic__row--two, .mosaic__row--eye-louis { grid-template-columns: 1fr; }
 }
 
 /* ============================
