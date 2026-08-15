@@ -78,6 +78,23 @@ img { display: block; max-width: 100%; }
   color: #fff;
 }
 
+.hero__clock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #d8d8d5;
+  white-space: nowrap;
+}
+
+.hero__clock-icon {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #d8d8d5;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .hero__intro {
   max-width: 320px;
   font-size: 0.85rem;
@@ -110,23 +127,23 @@ img { display: block; max-width: 100%; }
 
 .hero__video {
   position: absolute;
-  top: 15%;
-  left: var(--side-margin);
-  width: 34%;
-  max-width: 480px;
+  top: 34%;
+  left: 9%;
+  width: 45%;
+  max-width: 700px;
 }
 
 .hero__name {
   position: absolute;
   left: 0;
-  bottom: 2%;
+  bottom: 1%;
   width: 100%;
-  padding: 0 3%;
+  padding: 0 1.5%;
   font-family: var(--font-display);
   font-weight: 300;
   color: #fff;
-  font-size: clamp(2.6rem, 8.5vw, 7.5rem);
-  line-height: 1;
+  font-size: clamp(3rem, 11.5vw, 11rem);
+  line-height: 0.95;
   letter-spacing: -0.01em;
   white-space: nowrap;
 }

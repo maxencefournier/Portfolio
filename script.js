@@ -1,4 +1,17 @@
 /* ============================
+   HORLOGE
+============================ */
+const clockEl = document.getElementById("heroClockTime");
+
+function updateClock() {
+  if (!clockEl) return;
+  const now = new Date();
+  clockEl.textContent = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+/* ============================
    HERO — porte de garage à deux couches
    Couche 1 (dessous, fixe) : aperçu figé de la mosaïque
    Couche 2 (dessus, fixe) : le bloc sombre qui se rétracte
