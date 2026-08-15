@@ -1,4 +1,26 @@
 /* ============================
+   NOM DU HERO — remplit toujours exactement la largeur de l'écran
+============================ */
+const heroName = document.getElementById("heroName");
+
+function fitHeroName() {
+  if (!heroName) return;
+  heroName.style.fontSize = "100px";
+  const targetWidth = heroName.clientWidth;
+  const textWidth = heroName.scrollWidth;
+  const newSize = (100 * targetWidth) / textWidth;
+  heroName.style.fontSize = newSize + "px";
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(fitHeroName);
+} else {
+  window.addEventListener("load", fitHeroName);
+}
+fitHeroName();
+window.addEventListener("resize", fitHeroName);
+
+/* ============================
    HORLOGE
 ============================ */
 const clockEl = document.getElementById("heroClockTime");
