@@ -63,21 +63,29 @@ setInterval(updateClock, 10000);
    Un seul élément mosaïque : aucun doublon, donc aucun saut à la bascule.
 ============================ */
 /* ============================
-   HERO — porte de garage
-   Le bloc sombre se rétracte de façon linéaire au scroll. La mosaïque,
-   elle, n'est jamais touchée en JS : elle suit le scroll natif du
-   navigateur, ce qui la fait apparaître par le bas dès le début —
-   fluide par construction, sans latence ni à-coup possible.
+   HERO — porte de garage à rattrapage progressif
+   Le bloc sombre se rétracte de façon linéaire. La mosaïque part en
+   retard (mouvement très lent au début), puis accélère progressivement
+   pour rattraper exactement le mouvement du bloc sombre au moment où
+   celui-ci finit de remonter — recalé mathématiquement pour que les deux
+   se rejoignent pile à zéro écart à la fin, sans à-coup ni bosse.
 ============================ */
 const hero = document.getElementById("hero");
+const mosaicEl = document.getElementById("projets");
 const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
 
 function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
+
   hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
+
+  // Décalage supplémentaire par rapport au scroll naturel : nul à p=0 et p=1,
+  // positif entre les deux (la grille prend du retard puis le rattrape).
+  const lag = spacerHeight * p * (1 - p * p);
+  mosaicEl.style.transform = "translateY(" + lag + "px)";
 }
 
 window.addEventListener("scroll", updateHero, { passive: true });
