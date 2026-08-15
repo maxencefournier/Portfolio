@@ -62,42 +62,39 @@ setInterval(updateClock, 10000);
    pendant que le hero se rétracte, puis relâchée en flux normal.
    Un seul élément mosaïque : aucun doublon, donc aucun saut à la bascule.
 ============================ */
+/* ============================
+   HERO — porte de garage à fondu continu
+   Le bloc sombre se rétracte de façon linéaire. La mosaïque, elle,
+   reste visuellement figée au début (via un contre-décalage qui annule
+   son mouvement naturel de scroll), puis rattrape progressivement ce
+   mouvement pour finir exactement synchronisée — sans aucune bascule
+   d'état, donc aucun saut ni interstice visible.
+============================ */
 const hero = document.getElementById("hero");
 const mosaicEl = document.getElementById("projets");
-const mosaicSpace = document.getElementById("mosaicSpace");
 const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
 
-function measureMosaicHeight() {
-  // Mesure la hauteur naturelle de la mosaïque (hors épinglage) pour que
-  // le conteneur réserve toujours cet espace, même quand la mosaïque
-  // passe en position fixed — ça évite tout saut au relâchement.
-  const wasPinned = mosaicEl.classList.contains("mosaic--pinned");
-  mosaicEl.classList.remove("mosaic--pinned");
-  const naturalHeight = mosaicEl.offsetHeight;
-  mosaicSpace.style.height = naturalHeight + "px";
-  if (wasPinned) mosaicEl.classList.add("mosaic--pinned");
+function easeInCubic(p) {
+  return p * p * p;
 }
 
 function updateHero() {
-  const progress = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
-  hero.style.transform = "translateY(-" + (progress * 100) + "%)";
+  const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
 
-  if (progress >= 1) {
-    mosaicEl.classList.remove("mosaic--pinned");
-    hero.style.pointerEvents = "none";
-  } else {
-    mosaicEl.classList.add("mosaic--pinned");
-    hero.style.pointerEvents = "auto";
-  }
+  hero.style.transform = "translateY(-" + (p * 100) + "%)";
+  hero.style.pointerEvents = p >= 1 ? "none" : "auto";
+
+  const eased = easeInCubic(p);
+  const naturalOffset = spacerHeight * (1 - p);
+  const counterOffset = naturalOffset * (eased - 1);
+  mosaicEl.style.transform = "translateY(" + counterOffset + "px)";
 }
 
-measureMosaicHeight();
 window.addEventListener("scroll", updateHero, { passive: true });
 window.addEventListener("resize", () => {
   spacerHeight = heroSpacer.offsetHeight;
-  measureMosaicHeight();
   updateHero();
 });
 updateHero();
