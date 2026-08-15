@@ -3,77 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xite — Direction artistique &amp; world-building</title>
-<meta name="description" content="Portfolio de Xite, direction artistique et world-building — VR, cinéma IA, création de mondes.">
+<title>Maxence Fournier — Direction artistique &amp; world-building</title>
+<meta name="description" content="Portfolio de Maxence Fournier, direction artistique et world-building — VR, cinéma, création de mondes.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Sora:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- Archivo = substitut temporaire de Halyard Display (police payante). Remplace par Halyard si tu as les fichiers. -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- NAVIGATION -->
-<header class="nav" id="nav">
-  <a href="#top" class="nav__logo">XITE</a>
-  <nav class="nav__links">
-    <a href="#projets">Projets</a>
-    <a href="#about">À propos</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <button class="nav__toggle" id="navToggle" aria-label="Ouvrir le menu">
-    <span></span><span></span>
-  </button>
-</header>
-
-<!-- HERO -->
-<section class="hero" id="top">
+<!-- HERO — garage door -->
+<div class="hero-spacer"></div>
+<header class="hero" id="hero">
   <video class="hero__video" autoplay muted loop playsinline>
     <source src="Asset/Video/Mondes disparus Wip 01.mp4" type="video/mp4">
   </video>
-  <div class="hero__overlay"></div>
-  <div class="hero__content">
-    <p class="hero__eyebrow">Direction artistique — World-building — Storytelling</p>
-    <h1 class="hero__title">Construire des mondes<br>qu'on n'oublie pas.</h1>
-  </div>
-  <div class="hero__scroll">
-    <span>Scroll</span>
-    <div class="hero__scroll-line"></div>
-  </div>
-</section>
+  <h1 class="hero__name">Maxence Fournier</h1>
+</header>
 
 <!-- MOSAÏQUE -->
-<section class="mosaic" id="projets">
+<main class="mosaic" id="projets">
   <div class="mosaic__grid">
-    <a href="#p-mondes-disparus" class="mosaic__tile" style="grid-column: span 8;">
+
+    <a href="#p-mondes-disparus" class="tile" style="grid-column: span 7; grid-row: span 1;">
       <img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus">
-      <span class="mosaic__label">Mondes disparus</span>
+      <span class="tile__label"><strong>Mondes Disparus</strong><br>VR expedition</span>
     </a>
-    <a href="#p-harmony" class="mosaic__tile" style="grid-column: span 4;">
+
+    <a href="#p-harmony" class="tile" style="grid-column: span 5; grid-row: span 1;">
       <img src="Asset/Image/Harmony cover.png" alt="Harmony">
-      <span class="mosaic__label">Harmony</span>
+      <span class="tile__label"><strong>Harmony</strong><br>Short film</span>
     </a>
-    <a href="#p-eternelle-notre-dame" class="mosaic__tile" style="grid-column: span 4;">
-      <img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame">
-      <span class="mosaic__label">Éternelle Notre-Dame</span>
-    </a>
-    <a href="#p-louis-vuitton" class="mosaic__tile" style="grid-column: span 8;">
+
+    <div class="tile tile--eye-wrap" style="grid-column: span 2; grid-row: span 1;">
+      <div class="eye" id="eye">
+        <div class="eye__pupil" id="eyePupil"></div>
+      </div>
+    </div>
+
+    <a href="#p-louis-vuitton" class="tile" style="grid-column: span 10; grid-row: span 1;">
       <img src="Asset/Image/Louis Vuitton cover.png" alt="Louis Vuitton">
-      <span class="mosaic__label">Louis Vuitton</span>
+      <span class="tile__label"><strong>Louis Vuitton</strong><br>VR expedition</span>
     </a>
-    <a href="#p-somehow" class="mosaic__tile" style="grid-column: span 12;">
+
+    <a href="#p-somehow" class="tile" style="grid-column: span 12; grid-row: span 1;">
       <img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there">
-      <span class="mosaic__label">Somehow you'll get there</span>
+      <span class="tile__label"><strong>Somehow you'll get there</strong><br>Illustration</span>
     </a>
+
+    <a href="#p-eternelle-notre-dame" class="tile" style="grid-column: span 12; grid-row: span 1;">
+      <img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame">
+      <span class="tile__label"><strong>Éternelle Notre-Dame</strong><br>VR expedition</span>
+    </a>
+
   </div>
+</main>
+
+<!-- CITATION -->
+<section class="quote" id="quote">
+  <p class="quote__text">« Remplace ce texte par ta propre citation ici. »</p>
 </section>
 
 <!-- DÉTAILS PROJETS -->
-<main class="details">
+<section class="details">
 
   <article class="project" id="p-mondes-disparus">
-    <div class="project__media">
-      <img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus — expérience VR">
-    </div>
+    <div class="project__media"><img src="Asset/Image/Mondes disparus cover.png" alt="Mondes disparus"></div>
     <div class="project__info">
       <span class="project__eyebrow">Direction artistique — VR</span>
       <h2 class="project__title">Mondes disparus</h2>
@@ -82,9 +78,7 @@
   </article>
 
   <article class="project project--reverse" id="p-harmony">
-    <div class="project__media">
-      <img src="Asset/Image/Harmony cover.png" alt="Harmony — moyen métrage de science-fiction">
-    </div>
+    <div class="project__media"><img src="Asset/Image/Harmony cover.png" alt="Harmony"></div>
     <div class="project__info">
       <span class="project__eyebrow">Storyboard — Concept art — Moyen métrage</span>
       <h2 class="project__title">Harmony</h2>
@@ -92,21 +86,8 @@
     </div>
   </article>
 
-  <article class="project" id="p-eternelle-notre-dame">
-    <div class="project__media">
-      <img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame — expérience VR">
-    </div>
-    <div class="project__info">
-      <span class="project__eyebrow">VR</span>
-      <h2 class="project__title">Éternelle Notre-Dame</h2>
-      <p class="project__desc">Expérience VR retraçant l'histoire de la cathédrale et donnant accès à des lieux inaccessibles de son architecture.</p>
-    </div>
-  </article>
-
-  <article class="project project--reverse" id="p-louis-vuitton">
-    <div class="project__media">
-      <img src="Asset/Image/Louis Vuitton cover.png" alt="Projet VR Louis Vuitton">
-    </div>
+  <article class="project" id="p-louis-vuitton">
+    <div class="project__media"><img src="Asset/Image/Louis Vuitton cover.png" alt="Louis Vuitton"></div>
     <div class="project__info">
       <span class="project__eyebrow">Direction artistique — VR — 2 opus</span>
       <h2 class="project__title">Louis Vuitton</h2>
@@ -114,10 +95,8 @@
     </div>
   </article>
 
-  <article class="project" id="p-somehow">
-    <div class="project__media">
-      <img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there — série d'illustrations">
-    </div>
+  <article class="project project--reverse" id="p-somehow">
+    <div class="project__media"><img src="Asset/Image/Somehow you'll get there cover.png" alt="Somehow you'll get there"></div>
     <div class="project__info">
       <span class="project__eyebrow">Illustration — Projet personnel</span>
       <h2 class="project__title">Somehow you'll get there</h2>
@@ -125,12 +104,15 @@
     </div>
   </article>
 
-</main>
+  <article class="project" id="p-eternelle-notre-dame">
+    <div class="project__media"><img src="Asset/Image/Eternelle Notre Dame cover.png" alt="Éternelle Notre-Dame"></div>
+    <div class="project__info">
+      <span class="project__eyebrow">VR</span>
+      <h2 class="project__title">Éternelle Notre-Dame</h2>
+      <p class="project__desc">Expérience VR retraçant l'histoire de la cathédrale et donnant accès à des lieux inaccessibles de son architecture.</p>
+    </div>
+  </article>
 
-<!-- ABOUT -->
-<section class="about" id="about">
-  <p class="about__label">À propos</p>
-  <p class="about__text">Directeur artistique spécialisé dans la construction de mondes narratifs — de l'expérience immersive au cinéma généré par IA. Je cherche à rejoindre des équipes qui racontent des histoires à travers des univers visuels forts : jeu vidéo, animation, film, publicité.</p>
 </section>
 
 <!-- CONTACT -->
@@ -142,7 +124,7 @@
     <a href="#">LinkedIn</a>
     <a href="#">Are.na</a>
   </div>
-  <p class="contact__copy">© 2026 Xite</p>
+  <p class="contact__copy">© 2026 Maxence Fournier</p>
 </footer>
 
 <script src="script.js"></script>
