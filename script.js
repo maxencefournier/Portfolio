@@ -6,8 +6,10 @@ const heroName = document.getElementById("heroName");
 function fitHeroName() {
   if (!heroName) return;
   heroName.style.fontSize = "100px";
-  const targetWidth = heroName.clientWidth;
-  const textWidth = heroName.scrollWidth;
+  heroName.style.width = "max-content";
+  const textWidth = heroName.getBoundingClientRect().width;
+  heroName.style.width = "100%";
+  const targetWidth = heroName.parentElement.clientWidth;
   const newSize = (100 * targetWidth) / textWidth;
   heroName.style.fontSize = newSize + "px";
 }
