@@ -90,8 +90,14 @@ function updateHero() {
   // deux, avec une pente également nulle à p=1 — la grille démarre à sa
   // position native, prend du retard, puis rejoint position ET vitesse du
   // bloc sombre exactement à la fin.
+  // Point de synchronisation : au lieu de rejoindre le bloc sombre pile à la
+  // fin (p=1), la grille le rejoint bien plus tôt (à syncPoint), puis les
+  // deux avancent à l'identique jusqu'à la fin. Réversible automatiquement
+  // au scroll inverse puisque tout dépend uniquement de la position p.
   const amplitude = 1;
-  const lag = spacerHeight * amplitude * p * (1 - p) * (1 - p);
+  const syncPoint = 0.6;
+  const q = Math.min(p / syncPoint, 1);
+  const lag = spacerHeight * amplitude * q * (1 - q) * (1 - q);
   mosaicEl.style.transform = "translateY(" + lag + "px)";
 }
 
