@@ -86,19 +86,36 @@ function updateHero() {
   hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
-  // Retard par rapport au scroll naturel : nul à p=0 et p=1, positif entre les
-  // deux, avec une pente également nulle à p=1 — la grille démarre à sa
-  // position native, prend du retard, puis rejoint position ET vitesse du
-  // bloc sombre exactement à la fin.
-  // Point de synchronisation : au lieu de rejoindre le bloc sombre pile à la
-  // fin (p=1), la grille le rejoint bien plus tôt (à syncPoint), puis les
-  // deux avancent à l'identique jusqu'à la fin. Réversible automatiquement
-  // au scroll inverse puisque tout dépend uniquement de la position p.
-  const amplitude = 1;
-  const syncPoint = 0.6;
-  const q = Math.min(p / syncPoint, 1);
-  const lag = spacerHeight * amplitude * q * (1 - q) * (1 - q);
-  mosaicEl.style.transform = "translateY(" + lag + "px)";
+  // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
+  // réservée à la porte de garage (souvent < H depuis la position native).
+  // Le bas du hero se déplace donc à la vitesse H/S par pixel de scroll —
+  // plus vite que le défilement naturel de la grille (vitesse 1). Il ne
+  // suffit pas d'annuler l'écart à un instant donné : il faut aussi égaliser
+  // les deux vitesses à cet instant, sinon l'écart se recreuse aussitôt
+  // après. On utilise une interpolation de Hermite (position ET pente
+  // raccordées) entre la position native et le point de synchronisation.
+  const H = window.innerHeight;
+  const S = spacerHeight;
+  const syncPoint = 0.35;
+  const heroBottom = H * (1 - p);
+  const natural = S * (1 - p);
+  let actual;
+
+  if (p >= syncPoint) {
+    actual = heroBottom;
+  } else {
+    const t = p / syncPoint;
+    const P0 = S;
+    const P1 = H * (1 - syncPoint);
+    const D1 = -H * syncPoint;
+    const h00 = 2 * t * t * t - 3 * t * t + 1;
+    const h01 = -2 * t * t * t + 3 * t * t;
+    const h11 = t * t * t - t * t;
+    actual = h00 * P0 + h01 * P1 + h11 * D1;
+  }
+
+  const offset = actual - natural;
+  mosaicEl.style.transform = "translateY(" + offset + "px)";
 }
 
 updateSpacerHeight();
