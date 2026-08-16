@@ -129,12 +129,18 @@ function updateHero() {
 }
 
 updateSpacerHeight();
-window.addEventListener("scroll", updateHero, { passive: true });
+
+let rafId = null;
+function loop() {
+  updateHero();
+  rafId = requestAnimationFrame(loop);
+}
+loop();
+
 window.addEventListener("resize", () => {
   updateSpacerHeight();
   updateHero();
 });
-updateHero();
 
 /* ============================
    ŒIL — suit le curseur, x2 au survol, coins nets
