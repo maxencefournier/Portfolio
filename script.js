@@ -82,18 +82,16 @@ function updateSpacerHeight() {
 
 function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
+  const H = window.innerHeight;
 
-  hero.style.transform = "translateY(-" + (p * 100) + "%)";
+  // Léger recouvrement de sécurité (en px) qui absorbe tout micro-décalage
+  // résiduel entre le bas du bloc sombre et le haut de la grille — se résorbe
+  // à zéro pile à la fin (p=1) pour que le bloc sombre disparaisse bien
+  // complètement une fois la porte de garage terminée.
+  const overlap = 6 * (1 - p);
+  hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
-  // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
-  // réservée à la porte de garage (souvent < H depuis la position native).
-  // Le bas du hero se déplace donc à la vitesse H/S par pixel de scroll —
-  // plus vite que le défilement naturel de la grille (vitesse 1). Il ne
-  // suffit pas d'annuler l'écart à un instant donné : il faut aussi égaliser
-  // les deux vitesses à cet instant, sinon l'écart se recreuse aussitôt
-  // après. On utilise une interpolation de Hermite (position ET pente
-  // raccordées) entre la position native et le point de synchronisation.
   // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
   // réservée à la porte de garage (souvent < H depuis la position native).
   // Le bas du hero se déplace à la vitesse H/S par pixel de scroll — plus
@@ -103,7 +101,6 @@ function updateHero() {
   // syncPoint = hauteur de la 1ère rangée / hauteur d'écran. On l'utilise
   // directement, ce qui donne la synchronisation la plus précoce possible
   // sans jamais inverser le mouvement.
-  const H = window.innerHeight;
   const S = spacerHeight;
   const rowHeight = mosaicFirstRow.offsetHeight;
   const syncPoint = Math.min(Math.max(rowHeight / H, 0.05), 0.95);
