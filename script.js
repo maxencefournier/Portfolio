@@ -94,9 +94,19 @@ function updateHero() {
   // les deux vitesses à cet instant, sinon l'écart se recreuse aussitôt
   // après. On utilise une interpolation de Hermite (position ET pente
   // raccordées) entre la position native et le point de synchronisation.
+  // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
+  // réservée à la porte de garage (souvent < H depuis la position native).
+  // Le bas du hero se déplace à la vitesse H/S par pixel de scroll — plus
+  // vite que le défilement naturel de la grille. Verrouiller la grille sur
+  // le bloc sombre AVANT un certain point précis la forcerait à d'abord
+  // descendre (mouvement inversé, incorrect) : ce point minimum est
+  // syncPoint = hauteur de la 1ère rangée / hauteur d'écran. On l'utilise
+  // directement, ce qui donne la synchronisation la plus précoce possible
+  // sans jamais inverser le mouvement.
   const H = window.innerHeight;
   const S = spacerHeight;
-  const syncPoint = 0.35;
+  const rowHeight = mosaicFirstRow.offsetHeight;
+  const syncPoint = Math.min(Math.max(rowHeight / H, 0.05), 0.95);
   const heroBottom = H * (1 - p);
   const natural = S * (1 - p);
   let actual;
