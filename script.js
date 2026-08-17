@@ -84,26 +84,21 @@ function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   const H = window.innerHeight;
 
-  // Recouvrement de sécurité (en px) qui absorbe tout micro-décalage résiduel
-  // entre le bas du bloc sombre et le haut de la grille — se résorbe à zéro
-  // pile à la fin (p=1) pour que le bloc sombre disparaisse bien
-  // complètement une fois la porte de garage terminée.
-  const overlap = 20 * (1 - p);
-  hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
+  hero.style.transform = "translateY(-" + (p * 100) + "%)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
   // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
-  // réservée à la porte de garage (souvent < H depuis la position native).
-  // Verrouiller la grille sur le bloc sombre AVANT un certain point précis la
-  // forcerait à d'abord descendre (mouvement inversé) : ce point minimum est
-  // syncPoint = hauteur de la 1ère rangée / hauteur d'écran — à cette valeur
-  // exacte, la position native et la position "verrouillée sur le hero"
-  // coïncident déjà, donc une simple interpolation de valeur (sans chercher
-  // à raccorder aussi la vitesse) reste plate avant ce point : plus aucun
-  // détour vers le bas possible, par construction.
+  // réservée à la porte de garage. Verrouiller la grille sur le bloc sombre
+  // AVANT un certain point précis la forcerait à d'abord descendre : ce point
+  // minimum est syncPoint0 = hauteur de la 1ère rangée (bande tampon incluse)
+  // / hauteur d'écran. On ajoute une marge au-delà de ce minimum pour avoir
+  // un vrai mouvement progressif (pas juste immobile-puis-brusque), et la
+  // bande tampon cachée au-dessus des vignettes absorbe l'écart résiduel
+  // pendant toute cette marge — jamais de vide visible.
   const S = spacerHeight;
   const rowHeight = mosaicFirstRow.offsetHeight;
-  const syncPoint = Math.min(Math.max(rowHeight / H, 0.05), 0.95);
+  const syncPoint0 = rowHeight / H;
+  const syncPoint = Math.min(Math.max(syncPoint0 + 0.15, 0.1), 0.95);
   const heroBottom = H * (1 - p);
   const natural = S * (1 - p);
   let actual;
