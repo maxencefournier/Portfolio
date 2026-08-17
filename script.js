@@ -84,23 +84,23 @@ function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   const H = window.innerHeight;
 
-  // Léger recouvrement de sécurité (en px) qui absorbe tout micro-décalage
-  // résiduel entre le bas du bloc sombre et le haut de la grille — se résorbe
-  // à zéro pile à la fin (p=1) pour que le bloc sombre disparaisse bien
+  // Recouvrement de sécurité (en px) qui absorbe tout micro-décalage résiduel
+  // entre le bas du bloc sombre et le haut de la grille — se résorbe à zéro
+  // pile à la fin (p=1) pour que le bloc sombre disparaisse bien
   // complètement une fois la porte de garage terminée.
-  const overlap = 6 * (1 - p);
+  const overlap = 20 * (1 - p);
   hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
   // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
   // réservée à la porte de garage (souvent < H depuis la position native).
-  // Le bas du hero se déplace à la vitesse H/S par pixel de scroll — plus
-  // vite que le défilement naturel de la grille. Verrouiller la grille sur
-  // le bloc sombre AVANT un certain point précis la forcerait à d'abord
-  // descendre (mouvement inversé, incorrect) : ce point minimum est
-  // syncPoint = hauteur de la 1ère rangée / hauteur d'écran. On l'utilise
-  // directement, ce qui donne la synchronisation la plus précoce possible
-  // sans jamais inverser le mouvement.
+  // Verrouiller la grille sur le bloc sombre AVANT un certain point précis la
+  // forcerait à d'abord descendre (mouvement inversé) : ce point minimum est
+  // syncPoint = hauteur de la 1ère rangée / hauteur d'écran — à cette valeur
+  // exacte, la position native et la position "verrouillée sur le hero"
+  // coïncident déjà, donc une simple interpolation de valeur (sans chercher
+  // à raccorder aussi la vitesse) reste plate avant ce point : plus aucun
+  // détour vers le bas possible, par construction.
   const S = spacerHeight;
   const rowHeight = mosaicFirstRow.offsetHeight;
   const syncPoint = Math.min(Math.max(rowHeight / H, 0.05), 0.95);
@@ -114,11 +114,8 @@ function updateHero() {
     const t = p / syncPoint;
     const P0 = S;
     const P1 = H * (1 - syncPoint);
-    const D1 = -H * syncPoint;
-    const h00 = 2 * t * t * t - 3 * t * t + 1;
-    const h01 = -2 * t * t * t + 3 * t * t;
-    const h11 = t * t * t - t * t;
-    actual = h00 * P0 + h01 * P1 + h11 * D1;
+    const eased = t * t * t;
+    actual = P0 + (P1 - P0) * eased;
   }
 
   const offset = actual - natural;
