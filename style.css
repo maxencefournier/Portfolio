@@ -191,6 +191,10 @@ img { display: block; max-width: 100%; }
    correspond donc exactement entre les tuiles d'une même rangée. */
 .mosaic__row--two { grid-template-columns: 1.589fr 1fr; }
 .mosaic__row--eye-louis { grid-template-columns: 1fr 1.589fr; }
+/* Ratio recalculé pour les nouvelles dimensions exactes : Mondes Disparus
+   1430/977, Harmony 901/1023 — les largeurs de colonnes sont calées sur ces
+   ratios pour que les deux vignettes aient toujours la même hauteur. */
+.mosaic__row--hero { grid-template-columns: 1.662fr 1fr; }
 .mosaic__row--full { grid-template-columns: 1fr; }
 
 .tile {
@@ -204,6 +208,8 @@ img { display: block; max-width: 100%; }
 .tile--wide { aspect-ratio: 1430 / 900; }
 .tile--square { aspect-ratio: 1 / 1; }
 .tile--banner { aspect-ratio: 1850 / 697; }
+.tile--mondes { aspect-ratio: 1430 / 977; }
+.tile--harmony { aspect-ratio: 901 / 1023; }
 
 .tile img {
   width: 100%;
@@ -257,7 +263,7 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 760px) {
-  .mosaic__row--two, .mosaic__row--eye-louis { grid-template-columns: 1fr; }
+  .mosaic__row--two, .mosaic__row--eye-louis, .mosaic__row--hero { grid-template-columns: 1fr; }
 }
 
 /* ============================
