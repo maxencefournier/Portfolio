@@ -180,11 +180,6 @@ img { display: block; max-width: 100%; }
   margin: 0 auto;
 }
 
-.mosaic__buffer {
-  height: 28px;
-  background: var(--hero-bg);
-}
-
 .mosaic__row {
   display: grid;
   gap: var(--gap);

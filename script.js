@@ -84,17 +84,24 @@ function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   const H = window.innerHeight;
 
-  hero.style.transform = "translateY(-" + (p * 100) + "%)";
+  // Débordement du bloc sombre par-dessus la grille : maintenu à sa valeur
+  // maximale tout du long, et ne se résorbe qu'à la toute fin du mouvement
+  // (les 5 derniers %), pour que le bloc sombre disparaisse quand même
+  // complètement une fois la porte de garage terminée. Contrairement à une
+  // bande ajoutée sur la grille, ce débordement est porté par le bloc sombre
+  // lui-même : il disparaît donc naturellement avec lui, jamais de trace
+  // permanente.
+  const maxOverlap = 24;
+  const overlap = maxOverlap * Math.min(1, (1 - p) / 0.05);
+  hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
   // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
   // réservée à la porte de garage. Verrouiller la grille sur le bloc sombre
   // AVANT un certain point précis la forcerait à d'abord descendre : ce point
-  // minimum est syncPoint0 = hauteur de la 1ère rangée (bande tampon incluse)
-  // / hauteur d'écran. On ajoute une marge au-delà de ce minimum pour avoir
-  // un vrai mouvement progressif (pas juste immobile-puis-brusque), et la
-  // bande tampon cachée au-dessus des vignettes absorbe l'écart résiduel
-  // pendant toute cette marge — jamais de vide visible.
+  // minimum est syncPoint0 = hauteur de la 1ère rangée / hauteur d'écran. On
+  // ajoute une marge au-delà de ce minimum pour avoir un vrai mouvement
+  // progressif (pas juste immobile-puis-brusque).
   const S = spacerHeight;
   const rowHeight = mosaicFirstRow.offsetHeight;
   const syncPoint0 = rowHeight / H;
