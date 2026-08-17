@@ -67,6 +67,7 @@ setInterval(updateClock, 10000);
    pile au moment où le bloc sombre finit de remonter.
 ============================ */
 const hero = document.getElementById("hero");
+const heroOverlap = document.getElementById("heroOverlap");
 const mosaicEl = document.getElementById("projets");
 const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
@@ -84,17 +85,17 @@ function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   const H = window.innerHeight;
 
-  // Débordement du bloc sombre par-dessus la grille : maintenu à sa valeur
-  // maximale tout du long, et ne se résorbe qu'à la toute fin du mouvement
-  // (les 5 derniers %), pour que le bloc sombre disparaisse quand même
-  // complètement une fois la porte de garage terminée. Contrairement à une
-  // bande ajoutée sur la grille, ce débordement est porté par le bloc sombre
-  // lui-même : il disparaît donc naturellement avec lui, jamais de trace
-  // permanente.
+  hero.style.transform = "translateY(-" + (p * 100) + "%)";
+  hero.style.pointerEvents = p >= 1 ? "none" : "auto";
+
+  // Extension de couleur sous le bloc sombre (élément séparé, ne déplace pas
+  // le contenu du hero) : couvre la marge de superposition sur les vignettes
+  // agrandies, maintenue à sa valeur maximale tout du long et résorbée
+  // seulement dans les 5 derniers % du mouvement, pour disparaître avec le
+  // bloc sombre sans laisser de trace permanente.
   const maxOverlap = 70;
   const overlap = maxOverlap * Math.min(1, (1 - p) / 0.05);
-  hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
-  hero.style.pointerEvents = p >= 1 ? "none" : "auto";
+  heroOverlap.style.height = overlap + "px";
 
   // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
   // réservée à la porte de garage. Verrouiller la grille sur le bloc sombre
