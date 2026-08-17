@@ -91,7 +91,7 @@ function updateHero() {
   // bande ajoutée sur la grille, ce débordement est porté par le bloc sombre
   // lui-même : il disparaît donc naturellement avec lui, jamais de trace
   // permanente.
-  const maxOverlap = 24;
+  const maxOverlap = 70;
   const overlap = maxOverlap * Math.min(1, (1 - p) / 0.05);
   hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
