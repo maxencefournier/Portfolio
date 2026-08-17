@@ -76,12 +76,10 @@ img { display: block; max-width: 100%; }
   will-change: transform;
 }
 
-.hero__overlap {
+.hero__content {
   position: absolute;
-  left: 0;
-  top: 100%;
-  width: 100%;
-  background: var(--hero-bg);
+  inset: 0;
+  will-change: transform;
 }
 
 .hero__top {
