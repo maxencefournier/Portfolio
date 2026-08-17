@@ -67,7 +67,6 @@ setInterval(updateClock, 10000);
    pile au moment où le bloc sombre finit de remonter.
 ============================ */
 const hero = document.getElementById("hero");
-const heroContent = document.getElementById("heroContent");
 const mosaicEl = document.getElementById("projets");
 const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
@@ -85,15 +84,17 @@ function updateHero() {
   const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
   const H = window.innerHeight;
 
-  // Le bloc entier (fond compris) est décalé vers le bas pour déborder sur
-  // les vignettes agrandies — maintenu à sa valeur maximale tout du long,
-  // résorbé seulement dans les 5 derniers % du mouvement. Le contenu (nom,
-  // vidéo, texte) est contre-décalé du même montant en sens inverse, pour
-  // rester visuellement à sa place exacte pendant que seul le fond déborde.
+  // Le bloc sombre est ancré en haut par sa position (translateY), toujours
+  // calculée sur sa hauteur normale H — jamais décalée. Le débordement sur
+  // les vignettes agrandies est obtenu en rendant le bloc plus HAUT (donc son
+  // bord bas descend plus bas), pas en le déplaçant : le haut de l'écran
+  // reste donc toujours couvert, quel que soit le débordement en cours. Le
+  // contenu (nom, vidéo, texte), lui, garde une hauteur fixe H — il ne bouge
+  // donc jamais, peu importe le débordement du fond.
   const maxOverlap = 70;
   const overlap = maxOverlap * Math.min(1, (1 - p) / 0.05);
-  hero.style.transform = "translateY(" + (-(p * H) + overlap) + "px)";
-  heroContent.style.transform = "translateY(" + -overlap + "px)";
+  hero.style.height = (H + overlap) + "px";
+  hero.style.transform = "translateY(-" + (p * H) + "px)";
   hero.style.pointerEvents = p >= 1 ? "none" : "auto";
 
   // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
