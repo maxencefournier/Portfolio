@@ -73,6 +73,7 @@ setInterval(updateClock, 10000);
 ============================ */
 const hero = document.getElementById("hero");
 const heroVideo = document.getElementById("heroVideo");
+const heroTop = document.getElementById("heroTop");
 const heroReveal = document.getElementById("heroReveal");
 const heroSpacerA = document.getElementById("heroSpacerA");
 const mosaicEl = document.getElementById("projets");
@@ -93,13 +94,15 @@ function updateHero() {
   const scrollY = window.scrollY;
   const H = window.innerHeight;
 
-  // Phase A — seule la vidéo glisse franchement vers le haut et sort de
-  // l'écran (pas de fondu). L'horloge/texte/mots-clés et le nom restent
-  // fixes en permanence, comme le fond. La citation entre en fondu en
-  // remontant depuis le bas, à l'endroit exact de la référence.
+  // Phase A — la vidéo ET l'horloge/texte/mots-clés glissent franchement
+  // vers le haut et sortent de l'écran ensemble (pas de fondu). Le nom
+  // reste fixe en permanence, comme le fond. La citation glisse depuis
+  // le BAS DE L'ÉCRAN (pas juste quelques pixels) en apparaissant en
+  // fondu, comme un vrai défilement classique qui prend sa place.
   const pA = Math.min(Math.max(scrollY / spacerAHeight, 0), 1);
   heroVideo.style.transform = "translateY(-" + (pA * H) + "px)";
-  heroReveal.style.transform = "translateY(" + (40 * (1 - pA)) + "px)";
+  heroTop.style.transform = "translateY(-" + (pA * H) + "px)";
+  heroReveal.style.transform = "translateY(" + (H * (1 - pA)) + "px)";
   heroReveal.style.opacity = String(pA);
   heroReveal.style.pointerEvents = pA >= 1 ? "auto" : "none";
 
