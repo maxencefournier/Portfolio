@@ -63,6 +63,7 @@ img { display: block; max-width: 100%; }
 /* ============================
    HERO — porte de garage
 ============================ */
+.hero-spacer-a { height: 100vh; }
 .hero-spacer { height: 60vh; }
 
 .hero {
@@ -153,9 +154,9 @@ img { display: block; max-width: 100%; }
 .hero__name {
   position: absolute;
   left: 0;
-  bottom: 1%;
+  bottom: 0;
   width: 100%;
-  padding: 0 0.8%;
+  padding: 0;
   font-family: var(--font-display);
   font-weight: 300;
   color: #fff;
@@ -165,11 +166,46 @@ img { display: block; max-width: 100%; }
   white-space: nowrap;
 }
 
+.hero__intro-group {
+  will-change: transform, opacity;
+}
+
+.hero__reveal {
+  position: absolute;
+  top: 8%;
+  right: var(--side-margin);
+  max-width: 900px;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.hero__reveal-quote {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  line-height: 1.4;
+  color: #fff;
+  margin-bottom: 28px;
+}
+
+.hero__reveal-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #d8d8d5;
+  max-width: 560px;
+}
+
 @media (max-width: 760px) {
   .hero__top { flex-direction: column; gap: 16px; }
   .hero__skills { display: none; }
   .hero__video { width: 60%; top: 22%; }
   .hero__name { white-space: normal; font-size: clamp(2rem, 11vw, 3.5rem); bottom: 4%; }
+  .hero__reveal { left: var(--side-margin); right: var(--side-margin); max-width: none; }
 }
 
 /* ============================

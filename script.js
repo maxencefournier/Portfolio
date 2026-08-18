@@ -57,7 +57,12 @@ updateClock();
 setInterval(updateClock, 10000);
 
 /* ============================
-   HERO — porte de garage
+   HERO — phase A (échange intro/citation) puis phase B (porte de garage)
+   Phase A : le fond et le nom restent totalement immobiles ; seuls
+   l'intro/vidéo sortent (fondu + glissement) pendant que la citation
+   entre (fondu + glissement depuis le bas). Phase B : une fois la
+   phase A terminée, le scroll suivant déclenche la porte de garage
+   habituelle (inchangée, juste décalée du budget de scroll de la phase A).
    La position de repos native de la grille (avant tout scroll) est
    calculée pour que le bas de la première rangée touche exactement le
    bas de l'écran — aucune animation ne l'y amène, c'est sa position de
@@ -67,6 +72,9 @@ setInterval(updateClock, 10000);
    pile au moment où le bloc sombre finit de remonter.
 ============================ */
 const hero = document.getElementById("hero");
+const heroIntroGroup = document.getElementById("heroIntroGroup");
+const heroReveal = document.getElementById("heroReveal");
+const heroSpacerA = document.getElementById("heroSpacerA");
 const mosaicEl = document.getElementById("projets");
 const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
@@ -81,7 +89,21 @@ function updateSpacerHeight() {
 }
 
 function updateHero() {
-  const p = Math.min(Math.max(window.scrollY / spacerHeight, 0), 1);
+  const spacerAHeight = heroSpacerA.offsetHeight;
+  const scrollY = window.scrollY;
+
+  // Phase A
+  const pA = Math.min(Math.max(scrollY / spacerAHeight, 0), 1);
+  heroIntroGroup.style.transform = "translateY(" + (-60 * pA) + "px)";
+  heroIntroGroup.style.opacity = String(1 - pA);
+  heroIntroGroup.style.pointerEvents = pA >= 1 ? "none" : "auto";
+  heroReveal.style.transform = "translateY(" + (40 * (1 - pA)) + "px)";
+  heroReveal.style.opacity = String(pA);
+  heroReveal.style.pointerEvents = pA >= 1 ? "auto" : "none";
+
+  // Phase B — scroll restant une fois la phase A terminée
+  const scrollYB = Math.max(scrollY - spacerAHeight, 0);
+  const p = Math.min(Math.max(scrollYB / spacerHeight, 0), 1);
   const H = window.innerHeight;
 
   // Le bloc sombre est ancré en haut par sa position (translateY), toujours
