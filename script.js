@@ -72,7 +72,7 @@ setInterval(updateClock, 10000);
    pile au moment où le bloc sombre finit de remonter.
 ============================ */
 const hero = document.getElementById("hero");
-const heroIntroGroup = document.getElementById("heroIntroGroup");
+const heroVideo = document.getElementById("heroVideo");
 const heroReveal = document.getElementById("heroReveal");
 const heroSpacerA = document.getElementById("heroSpacerA");
 const mosaicEl = document.getElementById("projets");
@@ -91,12 +91,14 @@ function updateSpacerHeight() {
 function updateHero() {
   const spacerAHeight = heroSpacerA.offsetHeight;
   const scrollY = window.scrollY;
+  const H = window.innerHeight;
 
-  // Phase A
+  // Phase A — seule la vidéo glisse franchement vers le haut et sort de
+  // l'écran (pas de fondu). L'horloge/texte/mots-clés et le nom restent
+  // fixes en permanence, comme le fond. La citation entre en fondu en
+  // remontant depuis le bas, à l'endroit exact de la référence.
   const pA = Math.min(Math.max(scrollY / spacerAHeight, 0), 1);
-  heroIntroGroup.style.transform = "translateY(" + (-60 * pA) + "px)";
-  heroIntroGroup.style.opacity = String(1 - pA);
-  heroIntroGroup.style.pointerEvents = pA >= 1 ? "none" : "auto";
+  heroVideo.style.transform = "translateY(-" + (pA * H) + "px)";
   heroReveal.style.transform = "translateY(" + (40 * (1 - pA)) + "px)";
   heroReveal.style.opacity = String(pA);
   heroReveal.style.pointerEvents = pA >= 1 ? "auto" : "none";
@@ -104,7 +106,6 @@ function updateHero() {
   // Phase B — scroll restant une fois la phase A terminée
   const scrollYB = Math.max(scrollY - spacerAHeight, 0);
   const p = Math.min(Math.max(scrollYB / spacerHeight, 0), 1);
-  const H = window.innerHeight;
 
   // Le bloc sombre est ancré en haut par sa position (translateY), toujours
   // calculée sur sa hauteur normale H — jamais décalée. Le débordement sur
