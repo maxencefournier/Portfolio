@@ -1,6 +1,11 @@
 /* ============================
    TOKENS
 ============================ */
+body.scroll-locked {
+  overflow: hidden;
+  height: 100vh;
+}
+
 :root {
   --bg: #f2f1ee;
   --hero-bg: #111111;
@@ -63,7 +68,6 @@ img { display: block; max-width: 100%; }
 /* ============================
    HERO — porte de garage
 ============================ */
-.hero-spacer-a { height: 100vh; }
 .hero-spacer { height: 60vh; }
 
 .hero {
@@ -151,6 +155,7 @@ img { display: block; max-width: 100%; }
   object-fit: cover;
   z-index: 0;
   will-change: transform;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .hero__name {
@@ -171,6 +176,7 @@ img { display: block; max-width: 100%; }
 
 .hero__top {
   z-index: 2;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .hero__reveal {
@@ -183,6 +189,7 @@ img { display: block; max-width: 100%; }
   pointer-events: none;
   z-index: 2;
   will-change: transform, opacity;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.9s ease;
 }
 
 .hero__reveal-quote {

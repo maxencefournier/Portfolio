@@ -57,30 +57,119 @@ updateClock();
 setInterval(updateClock, 10000);
 
 /* ============================
-   HERO — phase A (échange intro/citation) puis phase B (porte de garage)
-   Phase A : le fond et le nom restent totalement immobiles ; seuls
-   l'intro/vidéo sortent (fondu + glissement) pendant que la citation
-   entre (fondu + glissement depuis le bas). Phase B : une fois la
-   phase A terminée, le scroll suivant déclenche la porte de garage
-   habituelle (inchangée, juste décalée du budget de scroll de la phase A).
-   La position de repos native de la grille (avant tout scroll) est
-   calculée pour que le bas de la première rangée touche exactement le
-   bas de l'écran — aucune animation ne l'y amène, c'est sa position de
-   départ réelle dans la page. Une fois le scroll commencé, la grille
-   se déplace plus lentement que le bloc sombre au début, puis accélère
+   HERO — phase A (palier intro/citation) puis phase B (porte de garage)
+   Phase A n'est plus liée au scroll continu : un simple geste de scroll
+   déclenche une animation automatique complète (fond + nom immobiles,
+   vidéo/texte sortent, citation entre), et le scroll de la page reste
+   bloqué pendant cette animation puis au palier atteint — comme un
+   "checkpoint" forcé. Un second geste de scroll débloque la page et
+   lance la phase B (porte de garage), qui reste scroll-continu comme
+   avant. La position de repos native de la grille (avant tout scroll)
+   est calculée pour que le bas de la première rangée touche exactement
+   le bas de l'écran. Une fois le scroll commencé, la grille se déplace
+   plus lentement que le bloc sombre au début, puis accélère
    progressivement pour se resynchroniser en position ET en vitesse
    pile au moment où le bloc sombre finit de remonter.
 ============================ */
+const body = document.getElementById("body");
 const hero = document.getElementById("hero");
 const heroVideo = document.getElementById("heroVideo");
 const heroTop = document.getElementById("heroTop");
 const heroReveal = document.getElementById("heroReveal");
-const heroSpacerA = document.getElementById("heroSpacerA");
 const mosaicEl = document.getElementById("projets");
 const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
+let heroPhase = 0; // 0 = repos (vidéo visible), 1 = palier (citation visible), 2 = scroll libre
+let isAnimatingPhaseA = false;
+const PHASE_A_DURATION = 900; // doit correspondre à la durée des transitions CSS
+
+function showQuote() {
+  const H = window.innerHeight;
+  heroVideo.style.transform = "translateY(-" + H + "px)";
+  heroTop.style.transform = "translateY(-" + H + "px)";
+  heroReveal.style.transform = "translateY(0px)";
+  heroReveal.style.opacity = "1";
+  heroReveal.style.pointerEvents = "auto";
+}
+
+function showIntro() {
+  heroVideo.style.transform = "translateY(0px)";
+  heroTop.style.transform = "translateY(0px)";
+  heroReveal.style.transform = "translateY(" + window.innerHeight + "px)";
+  heroReveal.style.opacity = "0";
+  heroReveal.style.pointerEvents = "none";
+}
+
+function unlockScroll() {
+  heroPhase = 2;
+  body.classList.remove("scroll-locked");
+  window.removeEventListener("wheel", onHeroWheel);
+  window.removeEventListener("touchstart", onTouchStart);
+  window.removeEventListener("touchmove", onTouchMove);
+}
+
+function onHeroWheel(e) {
+  if (heroPhase === 2) return;
+  e.preventDefault();
+  if (isAnimatingPhaseA) return;
+
+  if (e.deltaY > 0) {
+    if (heroPhase === 0) {
+      heroPhase = 1;
+      isAnimatingPhaseA = true;
+      showQuote();
+      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+    } else if (heroPhase === 1) {
+      unlockScroll();
+    }
+  } else if (e.deltaY < 0) {
+    if (heroPhase === 1) {
+      heroPhase = 0;
+      isAnimatingPhaseA = true;
+      showIntro();
+      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+    }
+  }
+}
+
+let touchStartY = 0;
+
+function onTouchStart(e) {
+  touchStartY = e.touches[0].clientY;
+}
+
+function onTouchMove(e) {
+  if (heroPhase === 2) return;
+  e.preventDefault();
+  if (isAnimatingPhaseA) return;
+
+  const deltaY = touchStartY - e.touches[0].clientY;
+  if (Math.abs(deltaY) < 20) return; // seuil minimal pour éviter les micro-gestes
+
+  if (deltaY > 0) {
+    if (heroPhase === 0) {
+      heroPhase = 1;
+      isAnimatingPhaseA = true;
+      showQuote();
+      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+    } else if (heroPhase === 1) {
+      unlockScroll();
+    }
+  } else if (deltaY < 0) {
+    if (heroPhase === 1) {
+      heroPhase = 0;
+      isAnimatingPhaseA = true;
+      showIntro();
+      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+    }
+  }
+}
+
+window.addEventListener("wheel", onHeroWheel, { passive: false });
+window.addEventListener("touchstart", onTouchStart, { passive: true });
+window.addEventListener("touchmove", onTouchMove, { passive: false });
 
 function updateSpacerHeight() {
   const rowHeight = mosaicFirstRow.offsetHeight;
@@ -90,25 +179,13 @@ function updateSpacerHeight() {
 }
 
 function updateHero() {
-  const spacerAHeight = heroSpacerA.offsetHeight;
   const scrollY = window.scrollY;
   const H = window.innerHeight;
 
-  // Phase A — la vidéo ET l'horloge/texte/mots-clés glissent franchement
-  // vers le haut et sortent de l'écran ensemble (pas de fondu). Le nom
-  // reste fixe en permanence, comme le fond. La citation glisse depuis
-  // le BAS DE L'ÉCRAN (pas juste quelques pixels) en apparaissant en
-  // fondu, comme un vrai défilement classique qui prend sa place.
-  const pA = Math.min(Math.max(scrollY / spacerAHeight, 0), 1);
-  heroVideo.style.transform = "translateY(-" + (pA * H) + "px)";
-  heroTop.style.transform = "translateY(-" + (pA * H) + "px)";
-  heroReveal.style.transform = "translateY(" + (H * (1 - pA)) + "px)";
-  heroReveal.style.opacity = String(pA);
-  heroReveal.style.pointerEvents = pA >= 1 ? "auto" : "none";
-
-  // Phase B — scroll restant une fois la phase A terminée
-  const scrollYB = Math.max(scrollY - spacerAHeight, 0);
-  const p = Math.min(Math.max(scrollYB / spacerHeight, 0), 1);
+  // Phase B — scroll continu, actif uniquement une fois le palier A débloqué
+  // (scrollY reste à 0 tant que le scroll est bloqué, donc p reste à 0 sans
+  // effet indésirable pendant les phases 0/1).
+  const p = Math.min(Math.max(scrollY / spacerHeight, 0), 1);
 
   // Le bloc sombre est ancré en haut par sa position (translateY), toujours
   // calculée sur sa hauteur normale H — jamais décalée. Le débordement sur
@@ -152,6 +229,9 @@ function updateHero() {
 }
 
 updateSpacerHeight();
+heroReveal.style.transition = "none";
+showIntro();
+requestAnimationFrame(() => { heroReveal.style.transition = ""; });
 
 let rafId = null;
 function loop() {
@@ -220,4 +300,4 @@ const observer = new IntersectionObserver(
   { threshold: 0.15 }
 );
 
-document.querySelectorAll(".quote").forEach((el) => observer.observe(el));
+
