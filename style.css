@@ -463,3 +463,118 @@ img { display: block; max-width: 100%; }
   font-size: 0.85rem;
   color: var(--ink-dim);
 }
+
+/* ============================
+   PAGE PROJET — infos, galerie, carrousel
+============================ */
+.project-detail__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 24px;
+}
+
+.project-detail__info-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.project-detail__info-text {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.project-detail__info-meta {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  margin-top: 20px;
+}
+
+.project-detail__keywords {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  margin-bottom: 80px;
+}
+
+.project-detail__gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-detail__gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .project-detail__info { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.project-carousel {
+  padding: 60px 0 80px;
+  border-top: 1px solid var(--line);
+  margin-top: 80px;
+}
+
+.project-carousel__label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  padding: 0 var(--side-margin);
+  margin-bottom: 20px;
+}
+
+.project-carousel__track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 var(--side-margin) 12px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-carousel__item {
+  flex: 0 0 calc((100% - 24px) / 3);
+  scroll-snap-align: start;
+  display: block;
+}
+
+.project-carousel__item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: var(--tile-bg);
+  transition: transform 0.4s ease;
+}
+
+.project-carousel__item:hover img { transform: scale(1.03); }
+
+.project-carousel__item span {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-top: 10px;
+}
+
+@media (max-width: 760px) {
+  .project-carousel__item { flex: 0 0 calc((100% - 12px) / 1.3); }
+}
