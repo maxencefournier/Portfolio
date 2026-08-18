@@ -187,6 +187,19 @@ function updateHero() {
   // effet indésirable pendant les phases 0/1).
   const p = Math.min(Math.max(scrollY / spacerHeight, 0), 1);
 
+  // Si on remonte tout en haut alors qu'on était en scroll libre (phase B),
+  // on revient au palier "citation" et on reverrouille le scroll — sinon,
+  // le bloc sombre redeviendrait plein écran en cachant la vidéo tout en
+  // gardant la citation affichée par-dessus, donnant l'impression d'être
+  // bloqué sur le texte sans pouvoir revenir à la vidéo.
+  if (heroPhase === 2 && scrollY <= 0) {
+    heroPhase = 1;
+    body.classList.add("scroll-locked");
+    window.addEventListener("wheel", onHeroWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+  }
+
   // Le bloc sombre est ancré en haut par sa position (translateY), toujours
   // calculée sur sa hauteur normale H — jamais décalée. Le débordement sur
   // les vignettes agrandies est obtenu en rendant le bloc plus HAUT (donc son
