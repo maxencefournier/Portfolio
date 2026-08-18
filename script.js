@@ -82,6 +82,7 @@ const heroSpacer = document.getElementById("heroSpacer");
 
 let spacerHeight = heroSpacer.offsetHeight;
 let heroPhase = 0; // 0 = repos (vidéo visible), 1 = palier (citation visible), 2 = scroll libre
+let hasLeftTopSinceUnlock = false;
 let isAnimatingPhaseA = false;
 const PHASE_A_DURATION = 900; // doit correspondre à la durée des transitions CSS
 
@@ -104,6 +105,7 @@ function showIntro() {
 
 function unlockScroll() {
   heroPhase = 2;
+  hasLeftTopSinceUnlock = false;
   body.classList.remove("scroll-locked");
   window.removeEventListener("wheel", onHeroWheel);
   window.removeEventListener("touchstart", onTouchStart);
@@ -191,9 +193,16 @@ function updateHero() {
   // on revient au palier "citation" et on reverrouille le scroll — sinon,
   // le bloc sombre redeviendrait plein écran en cachant la vidéo tout en
   // gardant la citation affichée par-dessus, donnant l'impression d'être
-  // bloqué sur le texte sans pouvoir revenir à la vidéo.
-  if (heroPhase === 2 && scrollY <= 0) {
+  // bloqué sur le texte sans pouvoir revenir à la vidéo. On ne fait ça que
+  // si on a réellement quitté le haut de page depuis le déblocage (sinon
+  // ça re-verrouillerait instantanément, juste après avoir débloqué,
+  // empêchant tout scroll vers la grille).
+  if (heroPhase === 2 && scrollY > 0) {
+    hasLeftTopSinceUnlock = true;
+  }
+  if (heroPhase === 2 && hasLeftTopSinceUnlock && scrollY <= 0) {
     heroPhase = 1;
+    hasLeftTopSinceUnlock = false;
     body.classList.add("scroll-locked");
     window.addEventListener("wheel", onHeroWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
