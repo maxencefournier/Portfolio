@@ -413,7 +413,7 @@ img { display: block; max-width: 100%; }
 .project-detail {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px var(--side-margin) 120px;
+  padding: 60px var(--side-margin) 60px;
 }
 
 .project-detail__eyebrow {
@@ -507,22 +507,119 @@ img { display: block; max-width: 100%; }
   margin-bottom: 80px;
 }
 
-.project-detail__gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+/* Image d'ouverture plein écran + logo centré */
+.project-hero-image {
+  position: relative;
+  width: 100%;
+  height: 92vh;
+  overflow: hidden;
+  background: var(--tile-bg);
 }
 
-.project-detail__gallery img {
+.project-hero-image > img:first-child {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-hero-image__logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22%;
+  max-width: 260px;
+  height: auto;
+}
+
+/* Galerie plein écran (chaque image occupe toute la largeur) */
+.project-gallery-full {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.project-gallery-full > img {
   width: 100%;
   height: auto;
   display: block;
 }
 
+/* Paire d'images en fondu au survol (même décor, deux ambiances) */
+.project-crossfade {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.project-crossfade img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-crossfade__top {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.project-crossfade:hover .project-crossfade__top { opacity: 1; }
+
 @media (max-width: 760px) {
+  .project-hero-image { height: 60vh; }
   .project-detail__info { grid-template-columns: 1fr; gap: 24px; }
 }
 
+/* Carrousel générique à flèches (dimensions natives des images) */
+.native-carousel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 60px var(--side-margin);
+}
+
+.native-carousel__viewport {
+  overflow: hidden;
+  flex: 1;
+}
+
+.native-carousel__track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.5s ease;
+}
+
+.native-carousel__track img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: auto;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+}
+
+.native-carousel__arrow {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.native-carousel__arrow:hover { background: var(--tile-bg); }
+
+/* Carrousel projets — vignettes carrées, navigation par flèches */
 .project-carousel {
   padding: 60px 0 80px;
   border-top: 1px solid var(--line);
@@ -540,18 +637,26 @@ img { display: block; max-width: 100%; }
   margin-bottom: 20px;
 }
 
+.project-carousel__wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 var(--side-margin);
+}
+
+.project-carousel__viewport {
+  overflow: hidden;
+  flex: 1;
+}
+
 .project-carousel__track {
   display: flex;
   gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 0 var(--side-margin) 12px;
-  -webkit-overflow-scrolling: touch;
+  transition: transform 0.5s ease;
 }
 
 .project-carousel__item {
   flex: 0 0 calc((100% - 24px) / 3);
-  scroll-snap-align: start;
   display: block;
 }
 
@@ -574,6 +679,21 @@ img { display: block; max-width: 100%; }
   color: var(--ink);
   margin-top: 10px;
 }
+
+.project-carousel__arrow {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.project-carousel__arrow:hover { background: var(--tile-bg); }
 
 @media (max-width: 760px) {
   .project-carousel__item { flex: 0 0 calc((100% - 12px) / 1.3); }

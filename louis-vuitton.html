@@ -12,12 +12,13 @@
 
 <header class="project-nav"><a href="index.html">← Retour au portfolio</a></header>
 
+<!-- IMAGE D'OUVERTURE PLEIN ÉCRAN + LOGO -->
+<section class="project-hero-image">
+  <img src="Asset/Image/Louis Vuitton/Louis Vuitton 01.png" alt="Louis Vuitton">
+  <img class="project-hero-image__logo" src="Asset/Image/Louis Vuitton/Logo Louis Vuitton.png" alt="Louis Vuitton">
+</section>
+
 <main class="project-detail">
-
-  <div class="project-detail__hero-image">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 01.png" alt="Louis Vuitton">
-  </div>
-
   <div class="project-detail__info">
     <div class="project-detail__info-col">
       <p class="project-detail__info-label">Description courte</p>
@@ -31,48 +32,113 @@
   </div>
 
   <p class="project-detail__keywords">Luxe · Artisanat · Surréalisme · Poétique · Immersif</p>
-
-  <div class="project-detail__gallery">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 02.png" alt="Louis Vuitton">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 03.png" alt="Louis Vuitton">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 04.png" alt="Louis Vuitton">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 05.jpg" alt="Louis Vuitton">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 06.png" alt="Louis Vuitton">
-    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 07.jpg" alt="Louis Vuitton">
-  </div>
-
 </main>
 
-<!-- CARROUSEL PROJETS -->
+<!-- GALERIE PLEIN ÉCRAN -->
+<section class="project-gallery-full">
+
+  <div class="project-crossfade">
+    <img src="Asset/Image/Louis Vuitton/Louis Vuitton 02.png" alt="Louis Vuitton — ambiance nuit">
+    <img class="project-crossfade__top" src="Asset/Image/Louis Vuitton/Louis Vuitton 03.png" alt="Louis Vuitton — ambiance jour">
+  </div>
+
+  <img src="Asset/Image/Louis Vuitton/Louis Vuitton 04.png" alt="Louis Vuitton">
+  <img src="Asset/Image/Louis Vuitton/Louis Vuitton 05.jpg" alt="Louis Vuitton">
+  <img src="Asset/Image/Louis Vuitton/Louis Vuitton 06.png" alt="Louis Vuitton">
+  <img src="Asset/Image/Louis Vuitton/Louis Vuitton 07.jpg" alt="Louis Vuitton">
+
+</section>
+
+<!-- CARROUSEL D'IMAGES SUPPLÉMENTAIRES (dimensions natives, navigation par flèches) -->
+<section class="native-carousel" id="nativeCarousel">
+  <button class="native-carousel__arrow native-carousel__arrow--prev" id="nativePrev" aria-label="Image précédente">←</button>
+  <div class="native-carousel__viewport">
+    <div class="native-carousel__track" id="nativeTrack">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 08.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 09.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 10.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 11.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 12.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 13.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 14.png" alt="Louis Vuitton">
+      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 15.png" alt="Louis Vuitton">
+    </div>
+  </div>
+  <button class="native-carousel__arrow native-carousel__arrow--next" id="nativeNext" aria-label="Image suivante">→</button>
+</section>
+
+<!-- CARROUSEL PROJETS (navigation par flèches) -->
 <section class="project-carousel">
   <p class="project-carousel__label">Autres projets</p>
-  <div class="project-carousel__track">
-    <a href="mondes-disparus.html" class="project-carousel__item">
-      <img src="Asset/Image/Mondes Disparus Cover 01.png" alt="Mondes Disparus">
-      <span>Mondes Disparus</span>
-    </a>
-    <a href="harmony.html" class="project-carousel__item">
-      <img src="Asset/Image/Harmony cover 01.png" alt="Harmony">
-      <span>Harmony</span>
-    </a>
-    <a href="louis-vuitton.html" class="project-carousel__item">
-      <img src="Asset/Image/Louis Vuitton/Louis Vuitton 01.png" alt="Louis Vuitton">
-      <span>Louis Vuitton</span>
-    </a>
-    <a href="somehow-youll-get-there.html" class="project-carousel__item">
-      <img src="Asset/Image/Somehow you'll get there cover 01.png" alt="Somehow you'll get there">
-      <span>Somehow you'll get there</span>
-    </a>
-    <a href="lhorizon-de-kheops.html" class="project-carousel__item">
-      <img src="Asset/Image/L'horizon de Kheops cover 01.png" alt="L'Horizon de Kheops">
-      <span>L'Horizon de Kheops</span>
-    </a>
-    <a href="case-chance.html" class="project-carousel__item">
-      <img src="Asset/Image/Case chance cover 01.png" alt="Case Chance">
-      <span>Case Chance</span>
-    </a>
+  <div class="project-carousel__wrap">
+    <button class="project-carousel__arrow project-carousel__arrow--prev" id="projPrev" aria-label="Projets précédents">←</button>
+    <div class="project-carousel__viewport">
+      <div class="project-carousel__track" id="projTrack">
+        <a href="mondes-disparus.html" class="project-carousel__item">
+          <img src="Asset/Image/Mondes Disparus Cover 01.png" alt="Mondes Disparus">
+          <span>Mondes Disparus</span>
+        </a>
+        <a href="harmony.html" class="project-carousel__item">
+          <img src="Asset/Image/Harmony cover 01.png" alt="Harmony">
+          <span>Harmony</span>
+        </a>
+        <a href="louis-vuitton.html" class="project-carousel__item">
+          <img src="Asset/Image/Louis Vuitton/Louis Vuitton 01.png" alt="Louis Vuitton">
+          <span>Louis Vuitton</span>
+        </a>
+        <a href="somehow-youll-get-there.html" class="project-carousel__item">
+          <img src="Asset/Image/Somehow you'll get there cover 01.png" alt="Somehow you'll get there">
+          <span>Somehow you'll get there</span>
+        </a>
+        <a href="lhorizon-de-kheops.html" class="project-carousel__item">
+          <img src="Asset/Image/L'horizon de Kheops cover 01.png" alt="L'Horizon de Kheops">
+          <span>L'Horizon de Kheops</span>
+        </a>
+        <a href="case-chance.html" class="project-carousel__item">
+          <img src="Asset/Image/Case chance cover 01.png" alt="Case Chance">
+          <span>Case Chance</span>
+        </a>
+      </div>
+    </div>
+    <button class="project-carousel__arrow project-carousel__arrow--next" id="projNext" aria-label="Projets suivants">→</button>
   </div>
 </section>
+
+<script>
+function setupArrowCarousel(trackId, prevId, nextId, itemsPerView) {
+  const track = document.getElementById(trackId);
+  const prevBtn = document.getElementById(prevId);
+  const nextBtn = document.getElementById(nextId);
+  if (!track || !prevBtn || !nextBtn) return;
+
+  const items = track.children;
+  let index = 0;
+
+  function update() {
+    const itemWidth = items[0].getBoundingClientRect().width;
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    const step = itemWidth + gap;
+    track.style.transform = "translateX(-" + (index * step) + "px)";
+  }
+
+  prevBtn.addEventListener("click", () => {
+    index = Math.max(index - itemsPerView, 0);
+    update();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    const maxIndex = Math.max(items.length - itemsPerView, 0);
+    index = Math.min(index + itemsPerView, maxIndex);
+    update();
+  });
+
+  window.addEventListener("resize", update);
+  update();
+}
+
+setupArrowCarousel("nativeTrack", "nativePrev", "nativeNext", 1);
+setupArrowCarousel("projTrack", "projPrev", "projNext", 3);
+</script>
 
 </body>
 </html>
