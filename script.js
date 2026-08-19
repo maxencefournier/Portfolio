@@ -47,11 +47,13 @@ window.addEventListener("resize", fitHeroName);
    HORLOGE
 ============================ */
 const clockEl = document.getElementById("heroClockTime");
+const clockElCompact = document.getElementById("heroClockTimeCompact");
 
 function updateClock() {
-  if (!clockEl) return;
   const now = new Date();
-  clockEl.textContent = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  const time = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  if (clockEl) clockEl.textContent = time;
+  if (clockElCompact) clockElCompact.textContent = time;
 }
 updateClock();
 setInterval(updateClock, 10000);
@@ -76,6 +78,7 @@ const hero = document.getElementById("hero");
 const heroVideo = document.getElementById("heroVideo");
 const heroTop = document.getElementById("heroTop");
 const heroReveal = document.getElementById("heroReveal");
+const heroCompactBar = document.getElementById("heroCompactBar");
 const mosaicEl = document.getElementById("projets");
 const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
@@ -188,6 +191,15 @@ function updateHero() {
   // (scrollY reste à 0 tant que le scroll est bloqué, donc p reste à 0 sans
   // effet indésirable pendant les phases 0/1).
   const p = Math.min(Math.max(scrollY / spacerHeight, 0), 1);
+
+  // La barre compacte (horloge, texte, liens) apparaît en fondu juste avant
+  // la fin de la porte de garage, remplissant l'espace qui servait de marge
+  // de sécurité plutôt que de le laisser vide.
+  if (p > 0.85) {
+    heroCompactBar.classList.add("is-visible");
+  } else {
+    heroCompactBar.classList.remove("is-visible");
+  }
 
   // Si on remonte tout en haut alors qu'on était en scroll libre (phase B),
   // on revient au palier "citation" et on reverrouille le scroll — sinon,
