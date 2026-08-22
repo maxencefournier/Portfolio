@@ -47,47 +47,52 @@ window.addEventListener("resize", fitHeroName);
    HORLOGE
 ============================ */
 const clockEl = document.getElementById("heroClockTime");
-const clockElCompact = document.getElementById("heroClockTimeCompact");
+const clockElLocked = document.getElementById("heroClockTimeLocked");
 
 function updateClock() {
   const now = new Date();
   const time = now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
   if (clockEl) clockEl.textContent = time;
-  if (clockElCompact) clockElCompact.textContent = time;
+  if (clockElLocked) clockElLocked.textContent = time;
 }
 updateClock();
 setInterval(updateClock, 10000);
 
 /* ============================
-   HERO — phase A (palier intro/citation) puis phase B (porte de garage)
-   Phase A n'est plus liée au scroll continu : un simple geste de scroll
-   déclenche une animation automatique complète (fond + nom immobiles,
-   vidéo/texte sortent, citation entre), et le scroll de la page reste
-   bloqué pendant cette animation puis au palier atteint — comme un
-   "checkpoint" forcé. Un second geste de scroll débloque la page et
-   lance la phase B (porte de garage), qui reste scroll-continu comme
-   avant. La position de repos native de la grille (avant tout scroll)
-   est calculée pour que le bas de la première rangée touche exactement
-   le bas de l'écran. Une fois le scroll commencé, la grille se déplace
-   plus lentement que le bloc sombre au début, puis accélère
-   progressivement pour se resynchroniser en position ET en vitesse
-   pile au moment où le bloc sombre finit de remonter.
+   HERO — trois paliers, chacun déclenché par un simple geste de scroll
+   (pas de scroll continu proportionnel) : le scroll de la page reste
+   bloqué pendant l'animation puis au palier atteint, comme un
+   "checkpoint" forcé.
+   0 : vidéo + nom.
+   1 : vidéo/infos sortent vers le haut, citation entrante, nom immobile.
+   2 : le bloc sombre entier se réduit à une bande fixe en haut de l'écran
+       (horloge + liens en fondu), le nom remonte juste assez pour sortir
+       de cette bande — puis reste "verrouillé" ainsi jusqu'en bas du
+       site, pendant que la grille défile normalement dessous. Un retour
+       en haut de la grille rejoue tout en sens inverse.
 ============================ */
 const body = document.getElementById("body");
 const hero = document.getElementById("hero");
 const heroVideo = document.getElementById("heroVideo");
 const heroTop = document.getElementById("heroTop");
 const heroReveal = document.getElementById("heroReveal");
-const heroCompactBar = document.getElementById("heroCompactBar");
-const mosaicEl = document.getElementById("projets");
-const mosaicFirstRow = document.getElementById("mosaicFirstRow");
 const heroSpacer = document.getElementById("heroSpacer");
 
-let spacerHeight = heroSpacer.offsetHeight;
-let heroPhase = 0; // 0 = repos (vidéo visible), 1 = palier (citation visible), 2 = scroll libre
-let hasLeftTopSinceUnlock = false;
-let isAnimatingPhaseA = false;
-const PHASE_A_DURATION = 900; // doit correspondre à la durée des transitions CSS
+let heroPhase = 0; // 0 = repos, 1 = citation, 2 = verrouillé (grille)
+let isAnimating = false;
+const TRANSITION_DURATION = 900; // doit correspondre à la durée des transitions CSS
+
+function getLockedBarHeight() {
+  return Math.max(56, window.innerWidth * 0.033);
+}
+
+function updateSpacerHeight() {
+  // Une fois verrouillé, le bloc sombre reste fixed (hauteur nulle dans le
+  // flux) : le spacer réserve donc en permanence 2x la hauteur de la bande
+  // — une fois pour la bande elle-même, une fois pour l'espace visible
+  // avant la grille (demandé égal à la hauteur de la bande).
+  heroSpacer.style.height = getLockedBarHeight() * 2 + "px";
+}
 
 function showQuote() {
   const H = window.innerHeight;
@@ -106,35 +111,76 @@ function showIntro() {
   heroReveal.style.pointerEvents = "none";
 }
 
-function unlockScroll() {
-  heroPhase = 2;
-  hasLeftTopSinceUnlock = false;
-  body.classList.remove("scroll-locked");
-  window.removeEventListener("wheel", onHeroWheel);
-  window.removeEventListener("touchstart", onTouchStart);
-  window.removeEventListener("touchmove", onTouchMove);
+function lockHero() {
+  hero.classList.add("hero--locked");
+  // La citation doit disparaître comme un élément collé au fond sombre —
+  // pas juste s'effacer sur place (son "top: 32%" recalculé sur la
+  // hauteur qui rétrécit ne suffit pas : le nom, qui remonte lui aussi,
+  // finit par la croiser visuellement). On la fait donc sortir par le
+  // haut d'un plein écran, en même temps que le fond se réduit, pour
+  // qu'elle reste toujours au-dessus du nom pendant toute la transition.
+  heroReveal.style.transform = "translateY(-" + window.innerHeight + "px)";
+  heroReveal.style.opacity = "0";
+}
+
+function unlockHero() {
+  hero.classList.remove("hero--locked");
+  showQuote();
+}
+
+function goToLocked() {
+  isAnimating = true;
+  lockHero();
+  setTimeout(() => {
+    heroPhase = 2;
+    isAnimating = false;
+    body.classList.remove("scroll-locked");
+    window.removeEventListener("wheel", onHeroWheel);
+    window.removeEventListener("touchstart", onTouchStart);
+    window.removeEventListener("touchmove", onTouchMove);
+    // Depuis la grille, c'est un geste "vers le haut" au tout début du
+    // scroll (pas un retour au flux natif) qui redéclenche l'animation
+    // inverse — voir onGridWheel/onGridTouchMove.
+    window.addEventListener("wheel", onGridWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onGridTouchMove, { passive: false });
+  }, TRANSITION_DURATION);
+}
+
+function backToQuote() {
+  isAnimating = true;
+  window.removeEventListener("wheel", onGridWheel);
+  window.removeEventListener("touchmove", onGridTouchMove);
+  unlockHero();
+  body.classList.add("scroll-locked");
+  setTimeout(() => {
+    heroPhase = 1;
+    isAnimating = false;
+    window.addEventListener("wheel", onHeroWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+  }, TRANSITION_DURATION);
 }
 
 function onHeroWheel(e) {
-  if (heroPhase === 2) return;
   e.preventDefault();
-  if (isAnimatingPhaseA) return;
+  if (isAnimating) return;
 
   if (e.deltaY > 0) {
     if (heroPhase === 0) {
       heroPhase = 1;
-      isAnimatingPhaseA = true;
+      isAnimating = true;
       showQuote();
-      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+      setTimeout(() => { isAnimating = false; }, TRANSITION_DURATION);
     } else if (heroPhase === 1) {
-      unlockScroll();
+      goToLocked();
     }
   } else if (e.deltaY < 0) {
     if (heroPhase === 1) {
       heroPhase = 0;
-      isAnimatingPhaseA = true;
+      isAnimating = true;
       showIntro();
-      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+      setTimeout(() => { isAnimating = false; }, TRANSITION_DURATION);
     }
   }
 }
@@ -146,9 +192,8 @@ function onTouchStart(e) {
 }
 
 function onTouchMove(e) {
-  if (heroPhase === 2) return;
   e.preventDefault();
-  if (isAnimatingPhaseA) return;
+  if (isAnimating) return;
 
   const deltaY = touchStartY - e.touches[0].clientY;
   if (Math.abs(deltaY) < 20) return; // seuil minimal pour éviter les micro-gestes
@@ -156,128 +201,50 @@ function onTouchMove(e) {
   if (deltaY > 0) {
     if (heroPhase === 0) {
       heroPhase = 1;
-      isAnimatingPhaseA = true;
+      isAnimating = true;
       showQuote();
-      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+      setTimeout(() => { isAnimating = false; }, TRANSITION_DURATION);
     } else if (heroPhase === 1) {
-      unlockScroll();
+      goToLocked();
     }
   } else if (deltaY < 0) {
     if (heroPhase === 1) {
       heroPhase = 0;
-      isAnimatingPhaseA = true;
+      isAnimating = true;
       showIntro();
-      setTimeout(() => { isAnimatingPhaseA = false; }, PHASE_A_DURATION);
+      setTimeout(() => { isAnimating = false; }, TRANSITION_DURATION);
     }
   }
+}
+
+// Dans la grille (phase 2), tant qu'on est encore tout en haut de la page,
+// un geste "vers le haut" (molette ou swipe) redéclenche directement
+// l'animation inverse — sans avoir besoin de scroller vers le bas d'abord
+// pour "débloquer" le retour.
+function onGridWheel(e) {
+  if (isAnimating || window.scrollY > 0 || e.deltaY >= 0) return;
+  e.preventDefault();
+  backToQuote();
+}
+
+function onGridTouchMove(e) {
+  if (isAnimating || window.scrollY > 0) return;
+  const deltaY = touchStartY - e.touches[0].clientY;
+  if (deltaY >= -20) return; // seuil minimal, symétrique à onTouchMove
+  e.preventDefault();
+  backToQuote();
 }
 
 window.addEventListener("wheel", onHeroWheel, { passive: false });
 window.addEventListener("touchstart", onTouchStart, { passive: true });
 window.addEventListener("touchmove", onTouchMove, { passive: false });
 
-function updateSpacerHeight() {
-  const rowHeight = mosaicFirstRow.offsetHeight;
-  const target = window.innerHeight - rowHeight;
-  spacerHeight = Math.max(target, 0);
-  heroSpacer.style.height = spacerHeight + "px";
-}
-
-function updateHero() {
-  const scrollY = window.scrollY;
-  const H = window.innerHeight;
-
-  // Phase B — scroll continu, actif uniquement une fois le palier A débloqué
-  // (scrollY reste à 0 tant que le scroll est bloqué, donc p reste à 0 sans
-  // effet indésirable pendant les phases 0/1).
-  const p = Math.min(Math.max(scrollY / spacerHeight, 0), 1);
-
-  // La barre compacte (horloge, texte, liens) apparaît en fondu juste avant
-  // la fin de la porte de garage, remplissant l'espace qui servait de marge
-  // de sécurité plutôt que de le laisser vide.
-  if (p > 0.85) {
-    heroCompactBar.classList.add("is-visible");
-  } else {
-    heroCompactBar.classList.remove("is-visible");
-  }
-
-  // Si on remonte tout en haut alors qu'on était en scroll libre (phase B),
-  // on revient au palier "citation" et on reverrouille le scroll — sinon,
-  // le bloc sombre redeviendrait plein écran en cachant la vidéo tout en
-  // gardant la citation affichée par-dessus, donnant l'impression d'être
-  // bloqué sur le texte sans pouvoir revenir à la vidéo. On ne fait ça que
-  // si on a réellement quitté le haut de page depuis le déblocage (sinon
-  // ça re-verrouillerait instantanément, juste après avoir débloqué,
-  // empêchant tout scroll vers la grille).
-  if (heroPhase === 2 && scrollY > 0) {
-    hasLeftTopSinceUnlock = true;
-  }
-  if (heroPhase === 2 && hasLeftTopSinceUnlock && scrollY <= 0) {
-    heroPhase = 1;
-    hasLeftTopSinceUnlock = false;
-    body.classList.add("scroll-locked");
-    window.addEventListener("wheel", onHeroWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-  }
-
-  // Le bloc sombre est ancré en haut par sa position (translateY), toujours
-  // calculée sur sa hauteur normale H — jamais décalée. Le débordement sur
-  // les vignettes agrandies est obtenu en rendant le bloc plus HAUT (donc son
-  // bord bas descend plus bas), pas en le déplaçant : le haut de l'écran
-  // reste donc toujours couvert, quel que soit le débordement en cours. Le
-  // contenu (nom, vidéo, texte), lui, garde une hauteur fixe H — il ne bouge
-  // donc jamais, peu importe le débordement du fond.
-  const maxOverlap = 70;
-  const overlap = maxOverlap * Math.min(1, (1 - p) / 0.05);
-  hero.style.height = (H + overlap) + "px";
-  hero.style.transform = "translateY(-" + (p * H) + "px)";
-  hero.style.pointerEvents = p >= 1 ? "none" : "auto";
-
-  // H = hauteur du hero (toujours 100% de l'écran) ; S = distance de scroll
-  // réservée à la porte de garage. Verrouiller la grille sur le bloc sombre
-  // AVANT un certain point précis la forcerait à d'abord descendre : ce point
-  // minimum est syncPoint0 = hauteur de la 1ère rangée / hauteur d'écran. On
-  // ajoute une marge au-delà de ce minimum pour avoir un vrai mouvement
-  // progressif (pas juste immobile-puis-brusque).
-  const S = spacerHeight;
-  const rowHeight = mosaicFirstRow.offsetHeight;
-  const syncPoint0 = rowHeight / H;
-  const syncPoint = Math.min(Math.max(syncPoint0 + 0.15, 0.1), 0.95);
-  const heroBottom = H * (1 - p);
-  const natural = S * (1 - p);
-  let actual;
-
-  if (p >= syncPoint) {
-    actual = heroBottom;
-  } else {
-    const t = p / syncPoint;
-    const P0 = S;
-    const P1 = H * (1 - syncPoint);
-    const eased = t * t * t;
-    actual = P0 + (P1 - P0) * eased;
-  }
-
-  const offset = actual - natural;
-  mosaicEl.style.transform = "translateY(" + offset + "px)";
-}
-
 updateSpacerHeight();
 heroReveal.style.transition = "none";
 showIntro();
 requestAnimationFrame(() => { heroReveal.style.transition = ""; });
 
-let rafId = null;
-function loop() {
-  updateHero();
-  rafId = requestAnimationFrame(loop);
-}
-loop();
-
-window.addEventListener("resize", () => {
-  updateSpacerHeight();
-  updateHero();
-});
+window.addEventListener("resize", updateSpacerHeight);
 
 /* ============================
    ŒIL — suit le curseur, x2 au survol, coins nets
@@ -333,5 +300,4 @@ const observer = new IntersectionObserver(
   },
   { threshold: 0.15 }
 );
-
 

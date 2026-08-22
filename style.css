@@ -21,6 +21,11 @@ body.scroll-locked {
 
   --side-margin: 9vw;
   --gap: 6px;
+
+  /* Hauteur de la bande sombre une fois "verrouillée" en haut de l'écran
+     (horloge + liens) — environ 100px sur un écran de 3024px de large,
+     avec un plancher pour rester lisible sur petit écran. */
+  --locked-bar-height: max(56px, 3.3vw);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,7 +71,7 @@ img { display: block; max-width: 100%; }
 .crosshair-h.is-active { opacity: 1; }
 
 /* ============================
-   HERO — porte de garage
+   HERO — paliers (vidéo → citation → bande verrouillée)
 ============================ */
 .hero-spacer { height: 60vh; }
 
@@ -77,15 +82,23 @@ img { display: block; max-width: 100%; }
   height: 100vh;
   background: var(--hero-bg);
   z-index: 30;
-  overflow: visible;
+  overflow: hidden;
   will-change: transform, height;
+  transition: height 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Palier final : le bloc sombre se réduit à une bande fixe en haut de
+   l'écran (horloge + liens), et y reste tant qu'on est dans la grille —
+   jusqu'en bas du site. */
+.hero--locked {
+  height: var(--locked-bar-height);
 }
 
 .hero__content {
   position: absolute;
   top: 0; left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 }
 
 .hero__top {
@@ -161,7 +174,7 @@ img { display: block; max-width: 100%; }
 .hero__name {
   position: absolute;
   left: 0;
-  bottom: -0.09em;
+  bottom: 0.01em;
   width: 100%;
   padding: 0;
   font-family: var(--font-display);
@@ -172,53 +185,50 @@ img { display: block; max-width: 100%; }
   letter-spacing: -0.01em;
   white-space: nowrap;
   z-index: 2;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.hero__compact-bar {
+/* Remonte le nom juste assez pour qu'il sorte entièrement par le haut de
+   la bande verrouillée (voir --locked-bar-height) : au moment où le bloc
+   finit de se réduire, le nom a déjà quitté la zone visible. */
+.hero--locked .hero__name {
+  transform: translateY(calc(-1 * var(--locked-bar-height)));
+}
+
+.hero__lockbar {
   position: absolute;
-  left: var(--side-margin);
-  right: var(--side-margin);
-  bottom: 6rem;
+  top: 0; left: 0;
+  width: 100%;
+  height: var(--locked-bar-height);
+  padding: 0 var(--side-margin);
   display: flex;
   align-items: center;
-  gap: 32px;
+  justify-content: space-between;
+  gap: var(--side-margin);
   z-index: 2;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.6s ease;
 }
 
-.hero__compact-bar.is-visible {
+.hero--locked .hero__lockbar {
   opacity: 1;
   pointer-events: auto;
 }
 
-.hero__compact-bar .hero__clock {
-  font-size: 0.8rem;
-  color: #d8d8d5;
+.hero__lockbar-links {
+  display: flex;
+  gap: 32px;
   flex-shrink: 0;
 }
 
-.hero__compact-text {
-  font-family: var(--font-body);
-  font-weight: 300;
+.hero__lockbar .hero__clock,
+.hero__lockbar .hero__contact-link {
   font-size: 0.8rem;
-  color: #d8d8d5;
-  flex: 1;
-  min-width: 0;
-}
-
-.hero__compact-link {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: #fff;
-  border-bottom: 1px solid rgba(255,255,255,0.4);
-  white-space: nowrap;
-  flex-shrink: 0;
 }
 
 @media (max-width: 760px) {
-  .hero__compact-bar { display: none; }
+  .hero__lockbar-links a:first-child { display: none; }
 }
 
 .hero__top {
@@ -230,7 +240,7 @@ img { display: block; max-width: 100%; }
   position: absolute;
   top: 32%;
   right: var(--side-margin);
-  max-width: 900px;
+  max-width: 830px;
   text-align: left;
   opacity: 0;
   pointer-events: none;
@@ -273,7 +283,7 @@ img { display: block; max-width: 100%; }
   position: relative;
   z-index: 1;
   background: var(--bg);
-  padding: 0 var(--side-margin);
+  padding: 0 var(--side-margin) var(--locked-bar-height);
 }
 
 .mosaic__inner {
@@ -287,15 +297,17 @@ img { display: block; max-width: 100%; }
   margin-bottom: var(--gap);
 }
 
+.mosaic__row:last-child { margin-bottom: 0; }
+
 /* Les fr sont calés exactement sur le ratio 1430/900 (≈1.589) des tuiles "larges",
    pour 1 (carré) des tuiles carrées — la hauteur en découle automatiquement et
    correspond donc exactement entre les tuiles d'une même rangée. */
 .mosaic__row--two { grid-template-columns: 1.589fr 1fr; }
 .mosaic__row--eye-louis { grid-template-columns: 1fr 1.589fr; }
-/* Ratio recalculé pour les nouvelles dimensions exactes : Mondes Disparus
-   1430/977, Harmony 901/1023 — les largeurs de colonnes sont calées sur ces
-   ratios pour que les deux vignettes aient toujours la même hauteur. */
-.mosaic__row--hero { grid-template-columns: 1.662fr 1fr; }
+/* Mondes Disparus (1430/900, comme "wide") + Harmony (carré) : même schéma
+   de colonnes que .mosaic__row--two pour que les deux vignettes aient
+   toujours la même hauteur. */
+.mosaic__row--hero { grid-template-columns: 1.589fr 1fr; }
 .mosaic__row--full { grid-template-columns: 1fr; }
 
 .tile {
@@ -309,8 +321,8 @@ img { display: block; max-width: 100%; }
 .tile--wide { aspect-ratio: 1430 / 900; }
 .tile--square { aspect-ratio: 1 / 1; }
 .tile--banner { aspect-ratio: 1850 / 697; }
-.tile--mondes { aspect-ratio: 1430 / 977; }
-.tile--harmony { aspect-ratio: 901 / 1023; }
+.tile--mondes { aspect-ratio: 1430 / 900; }
+.tile--harmony { aspect-ratio: 1 / 1; }
 
 .tile img {
   width: 100%;
